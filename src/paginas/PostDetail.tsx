@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { API_URL } from "../config/constants";
 
 type Image = { url: string };
 type Comment = { content: string };
@@ -17,7 +18,7 @@ export default function PostDetail() {
 
   // Cargar post
   const cargarPost = () => {
-    fetch(`${process.env.VITE_API_URL}/posts/${id}`)
+    fetch(`${API_URL}/posts/${id}`)
       .then(res => res.json())
       .then(setPost);
   };
@@ -30,7 +31,7 @@ export default function PostDetail() {
     e.preventDefault();
     if (!comment.trim()) return;
 
-    await fetch(`${process.env.VITE_API_URL}/comments`, {
+    await fetch(`${API_URL}/comments`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content: comment, postId: id }),

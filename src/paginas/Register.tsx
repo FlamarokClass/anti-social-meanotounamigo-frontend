@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from "../config/constants";
 
 export default function Register() {
   const [nickName, setNickName] = useState('');
@@ -7,12 +8,12 @@ export default function Register() {
 
   const manejarRegistro = async (e) => {
     e.preventDefault();
-    const res = await fetch(`${process.env.VITE_API_URL}/users`);
+    const res = await fetch(`${API_URL}/users`);
     const users = await res.json();
     const exists = users.some(u => u.nickName === nickName);
     if (exists) return alert('Ya existe ese nickName');
 
-    await fetch(`${process.env.VITE_API_URL}/users`, {
+    await fetch(`${API_URL}/users`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nickName })

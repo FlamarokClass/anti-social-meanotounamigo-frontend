@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import PostCard from '../components/PostCard';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from "../config/constants";
 
 export default function Perfil() {
   const { user, setUser } = useAuth();
@@ -9,7 +10,7 @@ export default function Perfil() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`${process.env.VITE_API_URL}/posts?userId=${user._id}`)
+    fetch(`${API_URL}/posts?userId=${user._id}`)
       .then(res => res.json())
       .then(setPosts);
   }, [user]);

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import PostCard from '../components/PostCard';
+import { API_URL } from "../config/constants";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    fetch(`${process.env.VITE_API_URL}/posts`)
+    fetch(`${API_URL}/posts`)
       .then(res => res.json())
       .then(setPosts);
   }, []);

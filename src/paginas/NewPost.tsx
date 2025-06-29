@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from "../config/constants";
 
 export default function NewPost() {
   const [description, setDescription] = useState('');
@@ -11,21 +12,21 @@ export default function NewPost() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`${process.env.VITE_API_URL}/tags`)
+    fetch(`${API_URL}/tags`)
       .then(res => res.json())
       .then(setTags);
   }, []);
 
   const manejarSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch(`${process.env.VITE_API_URL}/posts`, {
+    const res = await fetch(`${API_URL}/posts`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ description, tags: selectedTags, userId: user._id })
     });
     const newPost = await res.json();
     await Promise.all(imageUrls.filter(url => url).map(url =>
-      fetch(`${process.env.VITE_API_URL}/postimages`, {
+      fetch(`${API_URL}/postimages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url, postId: newPost._id })

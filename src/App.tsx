@@ -3,6 +3,8 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Header from '../src/components/Navbar'; 
 import Footer from '../src/components/Footer';
 
+
+
 // Importar páginas
 import Home from '../src/paginas/Home';
 import Login from '../src/paginas/Login';
