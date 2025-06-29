@@ -1,9 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-
-type User = {
-  _id: string;
-  nickName: string;
-};
+import { User } from '../types/mongoSchemas'; 
 
 type AuthContextType = {
   user: User | null;

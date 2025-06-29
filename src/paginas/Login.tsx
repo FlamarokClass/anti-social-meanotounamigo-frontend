@@ -10,13 +10,13 @@ export default function Login() {
   const navigate = useNavigate();
 
   // Usuario falso hardcodeado
-  const fakeUser = { _id: '1', nickName: 'testuser' };
+  const fakeUser = {  _id: '1', nickname: 'testuser', email: 'test@example.com', followers: [], following: []};
   const fakePassword = '123456';
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (nickName === fakeUser.nickName && password === fakePassword) {
+    if (nickName === fakeUser.nickname && password === fakePassword) {
       setUser(fakeUser);
       localStorage.setItem('user', JSON.stringify(fakeUser));
       navigate('/');

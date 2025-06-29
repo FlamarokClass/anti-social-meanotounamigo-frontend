@@ -1,70 +1,53 @@
-import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { API_URL } from "../config/constants";
+import { Post, PostPopulated } from '../types/mongoSchemas';
 
-type Image = { url: string };
-type Comment = { content: string };
-type Post = {
-  description: string;
-  images?: Image[];
-  tags?: string[];
-  comments?: Comment[];
-};
+type PostFlexible = Post | PostPopulated;
 
-export default function PostDetail() {
-  const { id } = useParams<{ id: string }>();
-  const [post, setPost] = useState<Post | null>(null);
-  const [comment, setComment] = useState('');
+interface Props {
+  post: PostFlexible;
+}
 
-  // Cargar post
-  const cargarPost = () => {
-    fetch(`${API_URL}/posts/${id}`)
-      .then(res => res.json())
-      .then(setPost);
-  };
+export default function PostDetalleFlexible({ post }: Props) {
+  const isPopulated = (p: PostFlexible): p is PostPopulated =>
+    Array.isArray(p.imagenes) && typeof p.imagenes[0] === 'object';
 
-  useEffect(() => {
-    cargarPost();
-  }, [id]);
+  const imagenes = isPopulated(post)
+    ? post.imagenes
+    : []; // en caso de ser solo IDs no se pueden mostrar
 
-  const manejarComentario = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!comment.trim()) return;
+  const etiquetas = isPopulated(post)
+    ? post.etiquetas.map(e => e.nombre)
+    : post.etiquetas;
 
-    await fetch(`${API_URL}/comments`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: comment, postId: id }),
-    });
+  const comentarios = isPopulated(post) ? post.comentarios : [];
 
-    setComment('');
-    cargarPost(); // recarga el post con los nuevos comentarios sin recargar la página
-  };
-
-  if (!post) return <p>Cargando...</p>;
+  const autor = isPopulated(post) ? post.user.nickname : '';
 
   return (
     <div className="container mt-4">
-      <h2>{post.description}</h2>
-      {post.images?.map((img, i) => (
-        <img key={i} src={img.url} alt={`imagen-${i + 1}`} className="img-fluid mb-2" />
-      ))}
-      <p>Etiquetas: {post.tags?.join(', ')}</p>
-      <h4>Comentarios:</h4>
-      <ul>
-        {post.comments?.map((c, i) => (
-          <li key={i}>{c.content}</li>
+      <h2>{post.descripcion}</h2>
+      <p><strong>Fecha:</strong> {post.fecha}</p>
+      {autor && <p><strong>Autor:</strong> {autor}</p>}
+
+      <div className="mb-3">
+        {imagenes.map((img, i) => (
+          <img key={i} src={img.url} alt={`Imagen ${i + 1}`} className="img-fluid mb-2" />
         ))}
-      </ul>
-      <form onSubmit={manejarComentario} className="mt-3">
-        <textarea
-          className="form-control"
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          required
-        />
-        <button className="btn btn-success">Agregar comentario</button>
-      </form>
+      </div>
+
+      <p><strong>Etiquetas:</strong> {etiquetas.join(', ')}</p>
+
+      {comentarios.length > 0 && (
+        <>
+          <h4>Comentarios:</h4>
+          <ul>
+            {comentarios.map((c) => (
+              <li key={c._id}>
+                <strong>{c.user.nickname}</strong>: {c.contenido}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
     </div>
   );
 }

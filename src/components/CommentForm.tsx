@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { API_URL } from '../config/constants';
 
 interface CommentFormProps {
   postId: string;
@@ -8,21 +10,29 @@ interface CommentFormProps {
 export default function CommentForm({ postId, onCommentAdded }: CommentFormProps) {
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!comment.trim()) return;
-    setLoading(true);
 
+    setLoading(true);
     try {
-      await fetch(`${process.env.REACT_APP_API_URL}/comments`, {
+      const res = await fetch(`${API_URL}/comments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ postId, content: comment })
+        body: JSON.stringify({
+          contenido: comment,
+          post: postId,
+          user: user?._id, // opcional si requerido por backend
+        }),
       });
+
+      if (!res.ok) throw new Error('Error al enviar el comentario');
+
       setComment('');
-      if (onCommentAdded) onCommentAdded();
-    } catch (error) {
+      onCommentAdded?.(); // callback para actualizar comentarios
+    } catch (err) {
       alert('Error al enviar el comentario');
     } finally {
       setLoading(false);
