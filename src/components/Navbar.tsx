@@ -41,7 +41,7 @@ export default function Header() {
               <>
                 <Nav.Link as={Link} to="/new" className="text-white">New Post</Nav.Link>
                 <Nav.Link onClick={handleLogout} className="text-white" style={{ cursor: 'pointer' }}>
-                  Log out ({user.nickName})
+                  Log out ({user.nickname})
                 </Nav.Link>
               </>
             ) : (
