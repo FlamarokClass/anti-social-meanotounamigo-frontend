@@ -39,6 +39,7 @@ export default function Header() {
             <Nav.Link as={Link} to="/" className="text-white">Home</Nav.Link>
             {user ? (
               <>
+                <Nav.Link as={Link} to="/mi-perfil" className="text-white">Mi perfil</Nav.Link>
                 <Nav.Link as={Link} to="/new" className="text-white">New Post</Nav.Link>
                 <Nav.Link onClick={handleLogout} className="text-white" style={{ cursor: 'pointer' }}>
                   Log out ({user.nickname})

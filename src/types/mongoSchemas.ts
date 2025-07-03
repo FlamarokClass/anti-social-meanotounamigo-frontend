@@ -39,12 +39,14 @@ export interface Tag {
 }
 
 // Post sin populate (usado en /posts y /posts/:id)
+type EtiquetaFlexible = string | Tag;
+
 export interface Post {
-  _id: string;
+  id: string;
   descripcion: string;
   fecha: string;
   imagenes: string[];
-  etiquetas: string[];
+  etiquetas: EtiquetaFlexible[];
   user: string;
 }
 

@@ -1,7 +1,7 @@
 const API = import.meta.env.VITE_API_URL;
 
 export const getPosts = async () => {
-  const res = await fetch(`${API}/posts`);
+  const res = await fetch(`${API}/post`);
   if (!res.ok) throw new Error("Error al obtener posts");
   return res.json();
 };
@@ -11,7 +11,7 @@ export const createPost = async (post: {
   etiquetas: string[];
   user: string;
 }) => {
-  const res = await fetch(`${API}/posts`, {
+  const res = await fetch(`${API}/post`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(post)
@@ -21,7 +21,7 @@ export const createPost = async (post: {
 };
 
 export const updatePost = async (id: string, data: any) => {
-  const res = await fetch(`${API}/posts/${id}`, {
+  const res = await fetch(`${API}/post/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
@@ -31,7 +31,7 @@ export const updatePost = async (id: string, data: any) => {
 };
 
 export const deletePost = async (id: string) => {
-  const res = await fetch(`${API}/posts/${id}`, {
+  const res = await fetch(`${API}/post/${id}`, {
     method: 'DELETE'
   });
   if (!res.ok) throw new Error("Error al eliminar post");

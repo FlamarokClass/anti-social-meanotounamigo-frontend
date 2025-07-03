@@ -1,49 +1,44 @@
 import { Link } from 'react-router-dom';
-import { Post, PostPopulated } from '../types/mongoSchemas';
+import { Post } from '../types/mongoSchemas';
 
-type PostCardData = Post | PostPopulated;
-
-interface PostCardProps {
-  post: PostCardData;
+interface Props {
+  post: Post;
+  cantidadComentarios?: number;
 }
 
-export default function PostCard({ post }: PostCardProps) {
-  const isPopulated = (p: PostCardData): p is PostPopulated =>
-    Array.isArray(p.imagenes) && typeof p.imagenes[0] === 'object';
-
-  const etiquetas = isPopulated(post)
-    ? post.etiquetas.map((tag) => tag.nombre).join(', ')
-    : post.etiquetas.length;
+export default function PostCard({ post, cantidadComentarios }: Props) {
+  const etiquetas = Array.isArray(post.etiquetas)
+    ? post.etiquetas.map((e) =>
+        typeof e === 'string' ? e : e.nombre
+      )
+    : [];
 
   return (
-    <div className="card mb-3">
+    <div className="card mb-3 shadow-sm">
       <div className="card-body">
         <h5 className="card-title">{post.descripcion}</h5>
-        <p className="text-muted">Fecha: {post.fecha}</p>
 
-        {/* Imágenes */}
-        {isPopulated(post) ? (
-          post.imagenes.map((img, i) => (
-            <img key={i} src={img.url} className="img-fluid mb-2" alt={`Imagen ${i + 1}`} />
-          ))
-        ) : (
-          <p>Imágenes: {post.imagenes.length}</p>
+        <p className="card-text">
+          <strong>Fecha:</strong> {post.fecha}
+        </p>
+
+        <p className="card-text">
+          <strong>Etiquetas:</strong>{' '}
+          {etiquetas.length > 0
+            ? etiquetas.join(', ')
+            : <span className="text-muted">(sin etiquetas)</span>}
+        </p>
+
+        {typeof cantidadComentarios === 'number' && (
+          <p className="card-text">
+            <strong>Comentarios:</strong>{' '}
+            {cantidadComentarios > 0
+              ? `${cantidadComentarios} comentario(s)`
+              : <span className="text-muted">(ninguno visible)</span>}
+          </p>
         )}
 
-        {/* Etiquetas */}
-        <p>Etiquetas: {etiquetas || 'Sin etiquetas'}</p>
-
-        {/* Usuario */}
-        {isPopulated(post) && (
-          <p>Publicado por: {post.user.nickname} ({post.user.email})</p>
-        )}
-
-        {/* Comentarios */}
-        {'comentarios' in post && (
-          <p>{post.comentarios.length} comentario(s)</p>
-        )}
-
-        <Link to={`/post/${post._id}`} className="btn btn-primary">
+        <Link to={`/post/${post.id || post._id}`} className="btn btn-primary">
           Ver más
         </Link>
       </div>
