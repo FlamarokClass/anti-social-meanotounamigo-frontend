@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, Nav, Form, FormControl, Button, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -25,16 +25,6 @@ export default function Header() {
 
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">
-          <Form className="mx-auto w-50 d-flex" onSubmit={e => e.preventDefault()}>
-            <FormControl
-              type="search"
-              placeholder="Buscar"
-              className="me-2"
-              aria-label="Buscar"
-            />
-            <Button variant="light">Buscar</Button>
-          </Form>
-
           <Nav className="ms-auto">
             <Nav.Link as={Link} to="/" className="text-white">Home</Nav.Link>
             {user ? (

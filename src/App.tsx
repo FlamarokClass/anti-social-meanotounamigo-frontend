@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Header from '../src/components/Navbar'; 
+import Footer from '../src/components/Footer';
 // Importar páginas
 import Home from '../src/paginas/Home';
 import Login from '../src/paginas/Login';
@@ -17,7 +18,7 @@ export default function App() {
   return (
     <>
       <Header />
-      <main style={{ paddingTop: '70px', minHeight: '80vh' }}>
+      <main style={{ paddingTop: '70px', minHeight: 'calc(100vh - 140px)' }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/mi-perfil" element={user ? <Perfil /> : <Navigate to="/login" />} />
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
+      <Footer />
     </>
   );
 }

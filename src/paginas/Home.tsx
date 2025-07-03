@@ -19,7 +19,7 @@ export default function Home() {
   const ahora = new Date();
   const publicacionesRecientes = posts.filter((post) => {
     const fechaPost = new Date(post.fecha);
-    const diferenciaHoras = (ahora.getTime() - fechaPost.getTime()) / (1000 * 60 * 60);
+    const diferenciaHoras = (ahora.getTime() - fechaPost.getTime()) / (1000 * 60 * 60); // logica para que en el home solo aparezcan las publicaciones dentro de las 24hs
     return diferenciaHoras <= 24;
   });
 

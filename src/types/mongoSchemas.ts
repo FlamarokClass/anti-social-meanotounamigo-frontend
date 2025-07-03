@@ -1,14 +1,16 @@
 export interface User {
-  _id: string;
+  _id?: string;  // opcional porque puede venir como _id
+  id?: string;   // opcional porque puede venir como id (por el transform)
   nickname: string;
   email: string;
   followers: string[];
   following: string[];
 }
 
-// Comentario sin populate (usado en /comments y /comments/:id)
+// comentario sin populate (usado en /comments y /comments/:id)
 export interface Comment {
-  _id: string;
+  _id?: string;
+  id?: string;
   contenido: string;
   fecha: string;
   post: string;
@@ -16,33 +18,30 @@ export interface Comment {
   antiguedad?: number;
 }
 
-// Comentario con populate (usado en GET /posts/:id/full)
+// comentario con populate (usado en GET /posts/:id/full)
 export interface CommentPopulated {
-  _id: string;
+  _id?: string;
+  id?: string;
   contenido: string;
   fecha: string;
   post: string;
-  user: Pick<User, '_id' | 'nickname'>;
+  user: Pick<User, '_id' | 'id' | 'nickname'>;
   antiguedad?: number;
 }
 
-// Imagen de post (GET /post-image y /post-image/:id)
-export interface PostImage {
-  _id: string;
-  url: string;
-}
-
-// Etiqueta (GET /tag y /tag/:id)
+// etiqueta (GET /tag y /tag/:id)
 export interface Tag {
-  _id: string;
+  _id?: string;  // opcional porque puede venir como _id
+  id?: string;   // opcional porque puede venir como id (por el transform)
   nombre: string;
 }
 
-// Post sin populate (usado en /posts y /posts/:id)
+// post sin populate (usado en /posts y /posts/:id)
 type EtiquetaFlexible = string | Tag;
 
 export interface Post {
-  id: string;
+  _id?: string;  // cambié de solo 'id' a opcional _id/id
+  id?: string;
   descripcion: string;
   fecha: string;
   imagenes: string[];
@@ -50,13 +49,13 @@ export interface Post {
   user: string;
 }
 
-// Post con populate y comentarios (usado en /posts/:id/full)
+// post con populate y comentarios (usado en /posts/:id/full)
 export interface PostPopulated {
-  _id: string;
+  _id?: string;
+  id?: string;
   descripcion: string;
   fecha: string;
-  imagenes: PostImage[];
   etiquetas: Tag[];
-  user: Pick<User, '_id' | 'nickname' | 'email'>;
+  user: Pick<User, '_id' | 'id' | 'nickname' | 'email'>;
   comentarios: CommentPopulated[];
 }
