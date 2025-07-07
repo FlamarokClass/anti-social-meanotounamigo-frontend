@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { API_URL } from '../config/constants';
-import { Comentario } from '../types/mongoSchemas'; // Asegurate de tener este tipo
+import { Comment } from '../types/mongoSchemas'; // Asegurate de tener este tipo
 
 interface Props {
   postId: string;
-  onComentarioAgregado?: (comentario: Comentario) => void;
+  onComentarioAgregado?: (comentario: Comment) => void;
 }
 
 export default function FormularioComentario({ postId, onComentarioAgregado }: Props) {
@@ -32,7 +32,7 @@ export default function FormularioComentario({ postId, onComentarioAgregado }: P
       if (!res.ok) throw new Error('Error al enviar el comentario');
 
       const resultado = await res.json();
-      const nuevoComentario: Comentario = {
+      const nuevoComentario: Comment = {
         ...resultado,
         user: {
           _id: user._id || user.id,

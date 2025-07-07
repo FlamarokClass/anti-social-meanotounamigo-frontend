@@ -15,3 +15,9 @@ export const createUser = async (usuario: { nickname: string, email: string, pas
   if (!res.ok) throw new Error("Error al crear usuario");
   return res.json();
 };
+
+export const getUserByIdWithPosts = async (id: string) => {
+  const res = await fetch(`${API}/user/${id}/post`);
+  if (!res.ok) throw new Error("Error al obtener usuarios");
+  return res.json(); 
+}

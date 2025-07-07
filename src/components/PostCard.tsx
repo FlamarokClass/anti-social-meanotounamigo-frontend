@@ -4,9 +4,16 @@ import { Post } from '../types/mongoSchemas';
 interface Props {
   post: Post;
   cantidadComentarios?: number;
+  onModificar?: () => void;
+  onEliminar?: () => void;
 }
 
-export default function PostCard({ post, cantidadComentarios }: Props) {
+export default function PostCard({
+  post,
+  cantidadComentarios,
+  onModificar,
+  onEliminar
+}: Props) {
   const etiquetas = Array.isArray(post.etiquetas)
     ? post.etiquetas.map((e) =>
         typeof e === 'string' ? e : e.nombre
@@ -37,10 +44,24 @@ export default function PostCard({ post, cantidadComentarios }: Props) {
               : <span className="text-muted">(ninguno visible)</span>}
           </p>
         )}
+        
+        <div className="d-flex gap-2 flex-wrap mt-3">
+          <Link to={`/post/${post.id || post._id}`} className="btn btn-primary">
+            Ver más
+          </Link>
 
-        <Link to={`/post/${post.id || post._id}`} className="btn btn-primary">
-          Ver más
-        </Link>
+          {onModificar && (
+            <button className="btn btn-warning" onClick={onModificar}>
+              Modificar
+            </button>
+          )}
+
+          {onEliminar && (
+            <button className="btn btn-danger" onClick={onEliminar}>
+              Eliminar
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -17,19 +17,13 @@ export default function Perfil() {
   useEffect(() => {
     if (!user) return;
 
-    fetch(`${API_URL}/post`)
+    fetch(`${API_URL}/user/${user.id}/post`)
       .then((res) => {
         if (!res.ok) throw new Error('Error al obtener posts');
         return res.json();
       })
       .then((data: PostConContador[]) => {
-        const propios = data.filter((post) => {
-          const userIdPost = typeof post.user === 'string'
-            ? post.user
-            : post.user?._id;
-          return userIdPost === user.id;
-        });
-        setPosts(propios);
+        setPosts(data);
       })
       .catch((err) => {
         console.error('Error al obtener posts:', err);
@@ -42,6 +36,27 @@ export default function Perfil() {
     setUser(null);
     localStorage.removeItem('user');
     navigate('/login');
+  };
+
+  const handleModificarPost = (post: PostConContador) => {
+    navigate(`/edit/${post._id}`);
+  };
+
+  const handleEliminarPost = async (postId: string) => {
+    if (!window.confirm('¿Estás seguro de que querés eliminar este post?')) return;
+
+    try {
+      const res = await fetch(`${API_URL}/post/${postId}`, {
+        method: 'DELETE',
+      });
+
+      if (!res.ok) throw new Error('Error al eliminar el post');
+
+      setPosts((prev) => prev.filter((p) => p._id !== postId));
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message);
+    }
   };
 
   if (!user) return <p>Cargando perfil...</p>;
@@ -66,8 +81,10 @@ export default function Perfil() {
           key={post.id || post._id}
           post={post}
           cantidadComentarios={post.comentariosVisibles ?? 0}
-      />
-  ))}
+          onModificar={() => handleModificarPost(post)}
+          onEliminar={() => handleEliminarPost(post._id || post.id)}
+        />
+      ))}
     </div>
   );
 }
