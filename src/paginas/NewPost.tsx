@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { API_URL } from "../config/constants";
 import { Tag } from '../types/mongoSchemas';
 import { createPost } from '../api/postApi';
+import { toast } from 'sonner';
 
 export default function NewPost() {
   const [descripcion, setDescripcion] = useState('');
@@ -18,8 +19,8 @@ export default function NewPost() {
       .then(res => res.json())
       .then((data: Tag[]) => setTags(data))
       .catch(err => {
-        console.error("Error al obtener etiquetas:", err);
-        alert("No se pudieron cargar las etiquetas");
+        toast.error("Error al obtener etiquetas:", err);
+        toast.error("No se pudieron cargar las etiquetas");
       });
   }, []);
 
@@ -30,7 +31,7 @@ export default function NewPost() {
     // validar que el usuario este autenticado
     const userId = user?._id || user?.id;
     if (!user || !userId) {
-      alert("Error: el usuario no está autenticado correctamente.");
+      toast.warning("Error: el usuario no está autenticado correctamente.");
       navigate('/login');
       return;
     }
@@ -38,7 +39,7 @@ export default function NewPost() {
     // validar que las etiquetas sean validas
     const etiquetasValidas = selectedTags.every(id => /^[0-9a-fA-F]{24}$/.test(id));
     if (!etiquetasValidas) {
-      alert("Alguna de las etiquetas seleccionadas no es válida.");
+      toast.warning("Alguna de las etiquetas seleccionadas no es válida.");
       return;
     }
 
@@ -53,7 +54,7 @@ export default function NewPost() {
       navigate('/profile');
     } catch (error: any) {
       console.error("Error al crear el post:", error.message);
-      alert(`Hubo un error al crear la publicación: ${error.message}`);
+      toast.error(`Hubo un error al crear la publicación: ${error.message}`);
     }
   };
 

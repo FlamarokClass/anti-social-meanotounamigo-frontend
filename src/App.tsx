@@ -9,7 +9,7 @@ import Register from '../src/paginas/Register';
 import Perfil from './paginas/Perfil';
 import NewPost from '../src/paginas/NewPost';
 import PostDetail from '../src/paginas/PostDetail';
-
+import { Toaster } from 'sonner';
 import { useAuth } from './context/AuthContext';
 
 export default function App() {
@@ -17,6 +17,7 @@ export default function App() {
 
   return (
     <>
+      <Toaster richColors position="top-center"/>
       <Header />
       <main style={{ paddingTop: '70px', minHeight: 'calc(100vh - 140px)' }}>
         <Routes>

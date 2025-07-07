@@ -26,19 +26,26 @@ export default function Header() {
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link as={Link} to="/" className="text-white">Home</Nav.Link>
+            <Nav.Link as={Link} to="/" className="text-white">
+            <i className="bi bi-house-door"></i>Inicio</Nav.Link>
             {user ? (
               <>
-                <Nav.Link as={Link} to="/mi-perfil" className="text-white">Mi perfil</Nav.Link>
-                <Nav.Link as={Link} to="/new" className="text-white">New Post</Nav.Link>
+                <Nav.Link as={Link} to="/mi-perfil" className="text-white">
+                <i className="bi bi-person-check"></i>Mi perfil</Nav.Link>
+
+                <Nav.Link as={Link} to="/new" className="text-white">
+                <i className="bi bi-chat-left-text"></i>Nuevo post</Nav.Link>
+
                 <Nav.Link onClick={handleLogout} className="text-white" style={{ cursor: 'pointer' }}>
-                  Log out ({user.nickname})
-                </Nav.Link>
+                  <i className="bi bi-door-closed"></i>Cerrar ({user.nickname})</Nav.Link>
               </>
             ) : (
               <>
-                <Nav.Link as={Link} to="/login" className="text-white">Login</Nav.Link>
-                <Nav.Link as={Link} to="/register" className="text-white">Register</Nav.Link>
+                <Nav.Link as={Link} to="/login" className="text-white">
+                <i className="bi bi-door-open"></i>Ingresar</Nav.Link>
+
+                <Nav.Link as={Link} to="/register" className="text-white">
+                <i className="bi bi-pen"></i>Registrar</Nav.Link>
               </>
             )}
           </Nav>

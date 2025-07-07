@@ -32,10 +32,10 @@ export default function Footer() {
           <Col md={4} className="mb-3">
             <h5 className="mb-3">Enlaces</h5>
             <ul className="list-unstyled">
-              <li><Link to="/" className="text-white-50 text-decoration-none hover-link">Home</Link></li>
-              <li><Link to="/login" className="text-white-50 text-decoration-none hover-link">Login</Link></li>
-              <li><Link to="/register" className="text-white-50 text-decoration-none hover-link">Register</Link></li>
-              <li><Link to="/new" className="text-white-50 text-decoration-none hover-link">New Post</Link></li>
+              <li><Link to="/" className="text-white-50 text-decoration-none hover-link">Inicio</Link></li>
+              <li><Link to="/login" className="text-white-50 text-decoration-none hover-link">Ingresar</Link></li>
+              <li><Link to="/register" className="text-white-50 text-decoration-none hover-link">Registrar</Link></li>
+              <li><Link to="/new" className="text-white-50 text-decoration-none hover-link">Nuevo post</Link></li>
             </ul>
           </Col>
           

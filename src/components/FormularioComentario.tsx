@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { API_URL } from '../config/constants';
 import { Comment } from '../types/mongoSchemas'; // Asegurate de tener este tipo
+import { toast } from 'sonner';
 
 interface Props {
   postId: string;
@@ -43,7 +44,7 @@ export default function FormularioComentario({ postId, onComentarioAgregado }: P
       onComentarioAgregado?.(nuevoComentario);
       setComentario('');
     } catch (err) {
-      alert('Error al enviar el comentario');
+      toast.error('Error al enviar el comentarioe');
     } finally {
       setCargando(false);
     }

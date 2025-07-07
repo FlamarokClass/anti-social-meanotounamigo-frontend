@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getUsers } from '../api/userApi'; 
+import { toast } from 'sonner';
 
 export default function Login() {
   const [nickname, setNickName] = useState('');
@@ -17,7 +18,7 @@ export default function Login() {
       const usuario = usuarios.find((u: any) => u.nickname === nickname && u.password === password);
 
       if (!usuario) {
-        alert('Usuario o contraseña incorrecta');
+        toast.error('Usuario o contraseña incorrecta');
         return;
       }
 
@@ -26,13 +27,13 @@ export default function Login() {
       navigate('/');
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
-      alert('Ocurrió un error al iniciar sesión');
+      toast.warning('Ocurrió un error al iniciar sesión');
     }
   };
 
   return (
     <form onSubmit={handleLogin} className="container mt-5" style={{ maxWidth: 400 }}>
-      <h2>Login</h2>
+      <h2>Iniciar</h2>
       <input
         placeholder="nickname"
         value={nickname}

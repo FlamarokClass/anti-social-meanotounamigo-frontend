@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUser, getUsers } from '../api/userApi';
+import { toast } from 'sonner';
 
 export default function Register() {
   const [nickname, setNickName] = useState('');
@@ -15,16 +16,15 @@ export default function Register() {
       const user = await getUsers();
       const exists = user.some(u => u.nickname === nickname);
       if (exists) {
-        alert('Ya existe ese nickname');
+        toast.error('Ya existe ese nickname');
         return;
       }
 
       await createUser({ nickname, email, password });
-      alert('Usuario registrado con éxito');
+      toast.success('Usuario registrado con éxito');
       navigate('/login');
     } catch (error) {
-      console.error('Error al registrar usuario:', error);
-      alert('Error al registrar usuario');
+      toast.error('Error al registrar usuario:', error);
     }
   };
 

@@ -4,6 +4,7 @@ import PostCard from '../components/PostCard';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../config/constants';
 import { Post } from '../types/mongoSchemas';
+import { toast } from 'sonner';
 
 type PostConContador = Post & { comentariosVisibles?: number };
 
@@ -25,9 +26,18 @@ export default function Perfil() {
       .then((data: PostConContador[]) => {
         setPosts(data);
       })
+ //     .catch((err) => {
+ //       console.error('Error al obtener posts:', err);
+ //       setError(err.message);
+ //     })
       .catch((err) => {
-        console.error('Error al obtener posts:', err);
-        setError(err.message);
+        toast.error('No se pudieron obtener tus publicaciones', {
+          description: err.message || 'Ocurrió un error inesperado.',
+          action: {
+            label: 'Reintentar',
+            onClick: () => window.location.reload() // o llamar a una función personalizada
+          }
+        });
       })
       .finally(() => setLoading(false));
   }, [user]);
@@ -53,9 +63,12 @@ export default function Perfil() {
       if (!res.ok) throw new Error('Error al eliminar el post');
 
       setPosts((prev) => prev.filter((p) => p._id !== postId));
+      toast.success('Publicación eliminada correctamente');
     } catch (err: any) {
       console.error(err);
       setError(err.message);
+      toast.error('No se pudo eliminar la publicación'), {
+        description: err.message || 'Ocurrió un error inesperado.',
     }
   };
 
@@ -87,4 +100,4 @@ export default function Perfil() {
       ))}
     </div>
   );
-}
+}}
