@@ -13,7 +13,7 @@ export function AnimatedButton({ children, className = "", ...props }: AnimatedB
     <motion.button
       whileHover={{
         scale: 1.15,
-        boxShadow: "0px 0px 18px rgba(0, 255, 0, 0.8)",
+        boxShadow: "0px 0px 18px rgba(34, 4, 90, 0.8)",
       }}
       whileTap={{ scale: 0.95 }}
       className={`btn ${className}`}
@@ -37,10 +37,8 @@ export function NavLinkAnimado({ children, onClick, className, to, style }: NavL
   return (
     <motion.div
       whileHover={{
-        scale: 0.85,
         border: "1px solid white",
         borderRadius: "8px",
-        padding: "4px",
       }}
       style={{ display: "inline-block", ...style }}
     >

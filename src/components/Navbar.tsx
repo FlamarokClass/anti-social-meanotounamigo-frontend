@@ -27,18 +27,23 @@ export default function Header() {
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link as={Link} to="/" className="text-white">
-            <i className="bi bi-house-door"></i>Inicio</Nav.Link>
+              <NavLinkAnimado to="/" className="text-white">
+               <i className="bi bi-house-door"></i> Inicio
+              </NavLinkAnimado>
+
             {user ? (
               <>
-                <Nav.Link as={Link} to="/mi-perfil" className="text-white">
-                <i className="bi bi-person-check"></i>Mi perfil</Nav.Link>
+                <NavLinkAnimado to="/mi-perfil" className="text-white">
+                  <i className="bi bi-person-check"></i> Mi perfil
+                </NavLinkAnimado>
 
-                <Nav.Link as={Link} to="/new" className="text-white">
-                <i className="bi bi-chat-left-text"></i>Nuevo post</Nav.Link>
+                <NavLinkAnimado to="/new" className="text-white">
+                  <i className="bi bi-chat-left-text"></i> Nuevo post
+                </NavLinkAnimado>
 
-                <Nav.Link onClick={handleLogout} className="text-white" style={{ cursor: 'pointer' }}>
-                  <i className="bi bi-door-closed"></i>Cerrar ({user.nickname})</Nav.Link>
+              <NavLinkAnimado onClick={handleLogout} className="text-white">
+                <i className="bi bi-door-closed"></i> Cerrar ({user.nickname})
+              </NavLinkAnimado>
               </>
             ) : (
               <>
@@ -46,8 +51,9 @@ export default function Header() {
                <i className="bi bi-door-open"></i> Ingresar
               </NavLinkAnimado>
 
-                <Nav.Link as={Link} to="/register" className="text-white">
-                <i className="bi bi-pen"></i>Registrar</Nav.Link>
+              <NavLinkAnimado to="/register" className="text-white">
+               <i className="bi bi-pen"></i> Registrar
+              </NavLinkAnimado>
               </>
             )}
           </Nav>
