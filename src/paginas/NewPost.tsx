@@ -5,6 +5,7 @@ import { API_URL } from "../config/constants";
 import { Tag } from '../types/mongoSchemas';
 import { createPost } from '../api/postApi';
 import { toast } from 'sonner';
+import { AnimatedButton } from '../components/Animated';
 
 export default function NewPost() {
   const [descripcion, setDescripcion] = useState('');
@@ -84,7 +85,9 @@ export default function NewPost() {
           ))}
         </select>
 
-        <button className="btn btn-success">Publicar</button>
+      <AnimatedButton type="submit" className="btn-success">
+        Publicar
+      </AnimatedButton>
       </form>
     </div>
   );

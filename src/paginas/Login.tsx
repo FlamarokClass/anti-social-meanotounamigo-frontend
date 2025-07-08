@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getUsers } from '../api/userApi'; 
 import { toast } from 'sonner';
+import { AnimatedButton } from '../components/Animated';
 
 export default function Login() {
   const [nickname, setNickName] = useState('');
@@ -47,9 +48,9 @@ export default function Login() {
         onChange={(e) => setPassword(e.target.value)}
         className="form-control mb-2"
       />
-      <button type="submit" className="btn btn-success">
+      <AnimatedButton type="submit" className="btn-success">
         Ingresar
-      </button>
+      </AnimatedButton>
     </form>
   );
 }

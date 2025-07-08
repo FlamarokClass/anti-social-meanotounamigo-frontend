@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { NavLinkAnimado } from "./Animated";
 
 export default function Header() {
   const { user, setUser } = useAuth();
@@ -41,8 +42,9 @@ export default function Header() {
               </>
             ) : (
               <>
-                <Nav.Link as={Link} to="/login" className="text-white">
-                <i className="bi bi-door-open"></i>Ingresar</Nav.Link>
+              <NavLinkAnimado to="/login" className="text-white">
+               <i className="bi bi-door-open"></i> Ingresar
+              </NavLinkAnimado>
 
                 <Nav.Link as={Link} to="/register" className="text-white">
                 <i className="bi bi-pen"></i>Registrar</Nav.Link>

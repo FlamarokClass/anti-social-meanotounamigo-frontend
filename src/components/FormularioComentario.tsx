@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { API_URL } from '../config/constants';
 import { Comment } from '../types/mongoSchemas'; // Asegurate de tener este tipo
 import { toast } from 'sonner';
+import { AnimatedButton } from '../components/Animated';
 
 interface Props {
   postId: string;
@@ -60,9 +61,13 @@ export default function FormularioComentario({ postId, onComentarioAgregado }: P
         disabled={cargando}
         required
       />
-      <button className="btn btn-secondary mt-2" disabled={cargando}>
-        {cargando ? 'Enviando...' : 'Agregar comentario'}
-      </button>
-    </form>
+    <AnimatedButton
+      type="submit"
+      className="btn btn-secondary mt-2"
+      disabled={cargando}
+    >
+      {cargando ? 'Enviando...' : 'Agregar comentario'}
+    </AnimatedButton>
+        </form>
   );
 }

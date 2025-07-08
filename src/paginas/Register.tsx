@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUser, getUsers } from '../api/userApi';
 import { toast } from 'sonner';
+import { AnimatedButton } from '../components/Animated';
 
 export default function Register() {
   const [nickname, setNickName] = useState('');
@@ -58,7 +59,9 @@ export default function Register() {
         required
       />
 
-      <button type="submit" className="btn btn-success">Registrarse</button>
+      <AnimatedButton type="submit" className="btn-success">
+        Registrarse
+      </AnimatedButton>
     </form>
   );
 }

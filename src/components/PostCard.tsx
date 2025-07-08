@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Post } from '../types/mongoSchemas';
+import { AnimatedButton } from '../components/Animated';
 
 interface Props {
   post: Post;
@@ -51,15 +52,15 @@ export default function PostCard({
           </Link>
 
           {onModificar && (
-            <button className="btn btn-warning" onClick={onModificar}>
+            <AnimatedButton className="btn btn-warning" onClick={onModificar}>
               Modificar
-            </button>
+            </AnimatedButton>
           )}
 
           {onEliminar && (
-            <button className="btn btn-danger" onClick={onEliminar}>
+            <AnimatedButton className="btn btn-warning" onClick={onModificar}>
               Eliminar
-            </button>
+            </AnimatedButton>
           )}
         </div>
       </div>
