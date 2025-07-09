@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../config/constants';
 import { Post } from '../types/mongoSchemas';
 import { toast } from 'sonner';
+import PageWrapper from '../components/Animated';
 
 type PostConContador = Post & { comentariosVisibles?: number };
 
@@ -75,29 +76,31 @@ export default function Perfil() {
   if (!user) return <p>Cargando perfil...</p>;
 
   return (
-    <div className="container mt-4">
-      <h2>Perfil de {user.nickname}</h2>
+    <PageWrapper>
+      <div className="container mt-4">
+        <h2>Perfil de {user.nickname}</h2>
 
-      <button className="btn btn-danger mb-3" onClick={manejarLogout}>
-        Cerrar sesión
-      </button>
+        <button className="btn btn-danger mb-3" onClick={manejarLogout}>
+          Cerrar sesión
+        </button>
 
-      {loading && <p>Cargando publicaciones...</p>}
-      {error && <p className="text-danger">{error}</p>}
+        {loading && <p>Cargando publicaciones...</p>}
+        {error && <p className="text-danger">{error}</p>}
 
-      {!loading && posts.length === 0 && (
-        <p>No publicaste nada todavía.</p>
-      )}
+        {!loading && posts.length === 0 && (
+          <p>No publicaste nada todavía.</p>
+        )}
 
-      {posts.map((post) => (
-        <PostCard
-          key={post.id || post._id}
-          post={post}
-          cantidadComentarios={post.comentariosVisibles ?? 0}
-          onModificar={() => handleModificarPost(post)}
-          onEliminar={() => handleEliminarPost(post._id || post.id)}
-        />
-      ))}
-    </div>
+        {posts.map((post) => (
+          <PostCard
+            key={post.id || post._id}
+            post={post}
+            cantidadComentarios={post.comentariosVisibles ?? 0}
+            onModificar={() => handleModificarPost(post)}
+            onEliminar={() => handleEliminarPost(post._id || post.id)}
+          />
+        ))}
+      </div>
+    </PageWrapper>
   );
 }}

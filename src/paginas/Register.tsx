@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { createUser, getUsers } from '../api/userApi';
 import { toast } from 'sonner';
 import { AnimatedButton } from '../components/Animated';
+import PageWrapper from '../components/Animated';
 
 export default function Register() {
   const [nickname, setNickName] = useState('');
@@ -30,38 +31,40 @@ export default function Register() {
   };
 
   return (
-    <form onSubmit={handleRegister} className="container mt-5" style={{ maxWidth: 400 }}>
-      <h2>Registro</h2>
+    <PageWrapper>
+      <form onSubmit={handleRegister} className="container mt-5" style={{ maxWidth: 400 }}>
+        <h2>Registro</h2>
 
-      <input
-        placeholder="Nickname"
-        value={nickname}
-        onChange={e => setNickName(e.target.value)}
-        className="form-control mb-2"
-        required
-      />
+        <input
+          placeholder="Nickname"
+          value={nickname}
+          onChange={e => setNickName(e.target.value)}
+          className="form-control mb-2"
+          required
+        />
 
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        className="form-control mb-2"
-        required
-      />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          className="form-control mb-2"
+          required
+        />
 
-      <input
-        type="password"
-        placeholder="Contraseña"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        className="form-control mb-2"
-        required
-      />
+        <input
+          type="password"
+          placeholder="Contraseña"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          className="form-control mb-2"
+          required
+        />
 
-      <AnimatedButton type="submit" className="btn-success">
-        Registrarse
-      </AnimatedButton>
-    </form>
+        <AnimatedButton type="submit" className="btn-success">
+          Registrarse
+        </AnimatedButton>
+      </form>
+    </PageWrapper>
   );
 }

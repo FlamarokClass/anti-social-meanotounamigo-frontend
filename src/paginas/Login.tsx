@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { getUsers } from '../api/userApi'; 
 import { toast } from 'sonner';
 import { AnimatedButton } from '../components/Animated';
+import PageWrapper from '../components/Animated';
 
 export default function Login() {
   const [nickname, setNickName] = useState('');
@@ -16,7 +17,9 @@ export default function Login() {
 
     try {
       const usuarios = await getUsers();
-      const usuario = usuarios.find((u: any) => u.nickname === nickname && u.password === password);
+      const usuario = usuarios.find(
+        (u: any) => u.nickname === nickname && u.password === password
+      );
 
       if (!usuario) {
         toast.error('Usuario o contraseña incorrecta');
@@ -33,24 +36,26 @@ export default function Login() {
   };
 
   return (
-    <form onSubmit={handleLogin} className="container mt-5" style={{ maxWidth: 400 }}>
-      <h2>Iniciar</h2>
-      <input
-        placeholder="nickname"
-        value={nickname}
-        onChange={(e) => setNickName(e.target.value)}
-        className="form-control mb-2"
-      />
-      <input
-        type="password"
-        placeholder="Contraseña"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="form-control mb-2"
-      />
-      <AnimatedButton type="submit" className="btn-success">
-        Ingresar
-      </AnimatedButton>
-    </form>
+    <PageWrapper> 
+      <form onSubmit={handleLogin} className="container mt-5" style={{ maxWidth: 400 }}>
+        <h2>Iniciar</h2>
+        <input
+          placeholder="nickname"
+          value={nickname}
+          onChange={(e) => setNickName(e.target.value)}
+          className="form-control mb-2"
+        />
+        <input
+          type="password"
+          placeholder="Contraseña"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="form-control mb-2"
+        />
+        <AnimatedButton type="submit" className="btn-success">
+          Ingresar
+        </AnimatedButton>
+      </form>
+    </PageWrapper>
   );
 }

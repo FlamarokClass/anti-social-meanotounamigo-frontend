@@ -6,6 +6,7 @@ import { Tag } from '../types/mongoSchemas';
 import { createPost } from '../api/postApi';
 import { toast } from 'sonner';
 import { AnimatedButton } from '../components/Animated';
+import PageWrapper from '../components/Animated';
 
 export default function NewPost() {
   const [descripcion, setDescripcion] = useState('');
@@ -60,35 +61,37 @@ export default function NewPost() {
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Nueva publicación</h2>
-      <form onSubmit={manejarSubmit}>
-        <textarea
-          required
-          className="form-control mb-2"
-          value={descripcion}
-          onChange={e => setDescripcion(e.target.value)}
-          placeholder="Descripción"
-        />
+    <PageWrapper>
+      <div className="container mt-4">
+        <h2>Nueva publicación</h2>
+        <form onSubmit={manejarSubmit}>
+          <textarea
+            required
+            className="form-control mb-2"
+            value={descripcion}
+            onChange={e => setDescripcion(e.target.value)}
+            placeholder="Descripción"
+          />
 
-        <select
-          multiple
-          className="form-control mb-2"
-          onChange={e =>
-            setSelectedTags([...e.target.selectedOptions].map(o => o.value))
-          }
-        >
-          {tags.map((tag, i) => (
-            <option key={i} value={tag['id']}>
-              {tag.nombre}
-            </option>
-          ))}
-        </select>
+          <select
+            multiple
+            className="form-control mb-2"
+            onChange={e =>
+              setSelectedTags([...e.target.selectedOptions].map(o => o.value))
+            }
+          >
+            {tags.map((tag, i) => (
+              <option key={i} value={tag['id']}>
+                {tag.nombre}
+              </option>
+            ))}
+          </select>
 
-      <AnimatedButton type="submit" className="btn-success">
-        Publicar
-      </AnimatedButton>
-      </form>
-    </div>
+        <AnimatedButton type="submit" className="btn-success">
+          Publicar
+        </AnimatedButton>
+        </form>
+      </div>
+    </PageWrapper>
   );
 }
