@@ -22,7 +22,7 @@ export default function App() {
       <main style={{ paddingTop: '70px', minHeight: 'calc(100vh - 140px)' }}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/mi-perfil" element={user ? <Perfil /> : <Navigate to="/login" />} />
+          <Route path="/mi-perfil" element={user ? <Perfil/> : <Navigate to="/login" />} />
           <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
           <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
           <Route path="/post/:id" element={<PostDetail />} />

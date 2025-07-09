@@ -31,8 +31,8 @@ export interface CommentPopulated {
 
 // etiqueta (GET /tag y /tag/:id)
 export interface Tag {
-  _id?: string;  // opcional porque puede venir como _id
-  id?: string;   // opcional porque puede venir como id (por el transform)
+  _id?: string;
+  id?: string;
   nombre: string;
 }
 
@@ -40,8 +40,7 @@ export interface Tag {
 type EtiquetaFlexible = string | Tag;
 
 export interface Post {
-  _id?: string;  // cambié de solo 'id' a opcional _id/id
-  id?: string;
+  _id: string;
   descripcion: string;
   fecha: string;
   imagenes: string[];

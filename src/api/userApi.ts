@@ -1,3 +1,5 @@
+// Habilita tipado para import.meta.env.VITE_*
+/// <reference types="vite/client" /> 
 const API = import.meta.env.VITE_API_URL;
 
 export const getUsers = async () => {

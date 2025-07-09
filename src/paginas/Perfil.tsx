@@ -26,16 +26,12 @@ export default function Perfil() {
       .then((data: PostConContador[]) => {
         setPosts(data);
       })
- //     .catch((err) => {
- //       console.error('Error al obtener posts:', err);
- //       setError(err.message);
- //     })
       .catch((err) => {
         toast.error('No se pudieron obtener tus publicaciones', {
           description: err.message || 'Ocurrió un error inesperado.',
           action: {
             label: 'Reintentar',
-            onClick: () => window.location.reload() // o llamar a una función personalizada
+            onClick: () => window.location.reload()
           }
         });
       })
@@ -67,8 +63,9 @@ export default function Perfil() {
     } catch (err: any) {
       console.error(err);
       setError(err.message);
-      toast.error('No se pudo eliminar la publicación'), {
+      toast.error('No se pudo eliminar la publicación', {
         description: err.message || 'Ocurrió un error inesperado.',
+      });
     }
   };
 
@@ -91,13 +88,13 @@ export default function Perfil() {
 
       {posts.map((post) => (
         <PostCard
-          key={post.id || post._id}
+          key={post._id}
           post={post}
           cantidadComentarios={post.comentariosVisibles ?? 0}
           onModificar={() => handleModificarPost(post)}
-          onEliminar={() => handleEliminarPost(post._id || post.id)}
+          onEliminar={() => handleEliminarPost(post._id)}
         />
       ))}
     </div>
   );
-}}
+}

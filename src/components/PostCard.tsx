@@ -58,7 +58,7 @@ export default function PostCard({
           )}
 
           {onEliminar && (
-            <AnimatedButton className="btn btn-warning" onClick={onModificar}>
+            <AnimatedButton className="btn btn-danger" onClick={onModificar}>
               Eliminar
             </AnimatedButton>
           )}

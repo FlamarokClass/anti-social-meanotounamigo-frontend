@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom';
-import React from "react";
-import { motion } from "framer-motion";
-import { Nav } from "react-bootstrap";
+import React from 'react';
+import { motion, HTMLMotionProps } from 'framer-motion';
+import { Nav } from 'react-bootstrap';
 
-//Botón con animaciones framer-motion +  Bootstrap
-interface AnimatedButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+// Botón con animaciones framer-motion + Bootstrap
+interface AnimatedButtonProps extends HTMLMotionProps<"button"> {
   children: React.ReactNode;
   className?: string;
 }
+
 export function AnimatedButton({ children, className = "", ...props }: AnimatedButtonProps) {
   return (
     <motion.button
@@ -29,7 +30,7 @@ interface NavLinkAnimadoProps {
   children: React.ReactNode;
   onClick?: () => void;
   className?: string;
-  to?: string;         
+  to: string;
   style?: React.CSSProperties;
 }
 
@@ -47,7 +48,7 @@ export function NavLinkAnimado({ children, onClick, className, to, style }: NavL
       <Nav.Link
         onClick={onClick}
         className={className}
-        as={Link}       
+        as={Link}
         to={to}
         style={{ cursor: "pointer" }}
       >

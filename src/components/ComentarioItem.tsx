@@ -1,7 +1,7 @@
-import { Comentario } from '../types/mongoSchemas';
+import { CommentPopulated } from '../types/mongoSchemas';
 
 interface Props {
-  comentario: Comentario;
+  comentario: CommentPopulated;
 }
 
 export default function ComentarioItem({ comentario }: Props) {
