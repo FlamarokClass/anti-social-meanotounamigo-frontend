@@ -5,8 +5,7 @@ import { API_URL } from "../config/constants";
 import { Tag } from '../types/mongoSchemas';
 import { createPost } from '../api/postApi';
 import { toast } from 'sonner';
-import { AnimatedButton } from '../components/Animated';
-import PageWrapper from '../components/Animated';
+import PageWrapper, { AnimatedButton } from '../components/Animated';
 
 export default function NewPost() {
   const [descripcion, setDescripcion] = useState('');

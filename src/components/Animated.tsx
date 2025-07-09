@@ -13,7 +13,7 @@ export function AnimatedButton({ children, className = "", ...props }: AnimatedB
     <motion.button
       whileHover={{
         scale: 1.15,
-        boxShadow: "0px 0px 18px rgba(34, 4, 90, 0.8)",
+        boxShadow: "0px 0px 18px rgb(241, 5, 5)",
       }}
       whileTap={{ scale: 0.95 }}
       className={`btn ${className}`}

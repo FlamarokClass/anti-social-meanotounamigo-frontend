@@ -24,7 +24,7 @@ export default function Footer({ darkMode }: FooterProps) {
           backgroundColor: darkMode ? '#541161' : '#008000',
           color: 'white',
         }}
-        className="py-4 mt-5"
+        className="py-4 mt-0"
       >
         <Container>
           <Row>

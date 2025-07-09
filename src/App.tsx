@@ -11,6 +11,7 @@ import PostDetail from '../src/paginas/PostDetail';
 import { Toaster } from 'sonner';
 import { useAuth } from './context/AuthContext';
 
+
 export default function App() {
   const { user } = useAuth();
 
@@ -21,16 +22,20 @@ export default function App() {
   return (
     <div className={darkMode ? 'bg-dark text-white' : ''} style={{ minHeight: '100vh' }}>
       <Toaster richColors position="top-center" />
-      
-      
+            
       <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
 
- 
-      <main
+       <main
         style={{
           paddingTop: '70px',
           minHeight: 'calc(100vh - 140px)',
-          backgroundColor: darkMode ? '#5e5e5e' : '#f8f9fa',
+          backgroundColor: darkMode ? '#5e5e5e' : 'transparent',
+          backgroundImage: darkMode
+            ? 'url("/fondoOscuro.jpg")'
+            : 'url("/fondoClaro.jpg")', 
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center center',
           color: darkMode ? 'white' : 'black'
         }}
       >
