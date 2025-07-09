@@ -21,7 +21,7 @@ export default function Footer({ darkMode }: FooterProps) {
       </style>
       <footer
         style={{
-          backgroundColor: darkMode ? '#08014a' : '#008000',
+          backgroundColor: darkMode ? '#541161' : '#008000',
           color: 'white',
         }}
         className="py-4 mt-5"

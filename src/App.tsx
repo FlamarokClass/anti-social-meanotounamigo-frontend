@@ -22,15 +22,15 @@ export default function App() {
     <div className={darkMode ? 'bg-dark text-white' : ''} style={{ minHeight: '100vh' }}>
       <Toaster richColors position="top-center" />
       
-      {/* Le pasamos el modo al Header */}
+      
       <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
 
-      {/* Contenido principal con estilo condicional */}
+ 
       <main
         style={{
           paddingTop: '70px',
           minHeight: 'calc(100vh - 140px)',
-          backgroundColor: darkMode ? '#121212' : '#f8f9fa',
+          backgroundColor: darkMode ? '#5e5e5e' : '#f8f9fa',
           color: darkMode ? 'white' : 'black'
         }}
       >
@@ -45,7 +45,7 @@ export default function App() {
         </Routes>
       </main>
 
-      {/* Le pasamos el modo al Footer también si querés que cambie de color */}
+
       <Footer darkMode={darkMode} />
     </div>
   );

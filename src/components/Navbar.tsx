@@ -24,7 +24,7 @@ export default function Header({ darkMode, toggleDarkMode }: HeaderProps) {
   return (
     <Navbar
       expand="lg"
-      style={{ backgroundColor: darkMode ? '#08014a' : '#008000' }}
+      style={{ backgroundColor: darkMode ? '#541161' : '#008000' }}
       variant="dark"
       fixed="top"
     >
