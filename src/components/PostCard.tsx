@@ -47,7 +47,7 @@ export default function PostCard({
         )}
         
         <div className="d-flex gap-2 flex-wrap mt-3">
-          <Link to={`/post/${post.id || post._id}`} className="btn btn-primary">
+          <Link to={`/post/${post._id}`} className="btn btn-primary">
             Ver más
           </Link>
 

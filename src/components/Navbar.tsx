@@ -62,7 +62,12 @@ export default function Header({ darkMode, toggleDarkMode }: HeaderProps) {
                   <i className="bi bi-chat-left-text"></i> Nuevo post
                 </NavLinkAnimado>
 
-                <NavLinkAnimado onClick={handleLogout} className="text-white">
+                {/* Este solo necesita onClick, así que pasamos un to vacío o el componente debe manejarlo internamente */}
+                <NavLinkAnimado
+                  onClick={handleLogout}
+                  className="text-white"
+                  to="" // <- para evitar error de que falta "to"
+                >
                   <i className="bi bi-door-closed"></i> Cerrar ({user.nickname})
                 </NavLinkAnimado>
               </>

@@ -55,10 +55,10 @@ Aplicación de estilos condicionales para modo oscuro (con ternarios y estilos i
 Consumo de endpoints de backend para traer datos de usuarios, posts, imágenes, comentarios, etc.
 Métodos usados: GET, POST, DELETE, con fetch().
 
-💡 **Funciones importantes (hooks y lógica)**<br>
-*useEffect:* para cargar datos al iniciar el componente.
-*useState:* para manejar estados locales como posts, loading, error, user, etc.
-*useNavigate:* para redirigir luego de login, logout o acciones.
+💡 *Funciones importantes (hooks y lógica)*<br>
+useEffect: para cargar datos al iniciar el componente.<br>
+useState: para manejar estados locales como posts, loading, error, user, etc.<br>
+useNavigate: para redirigir luego de login, logout o acciones.<br>
 
 ### Instrucciones para correr la aplicación 
 -Es requisito tener instalado Node.js
