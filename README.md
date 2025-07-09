@@ -17,6 +17,48 @@ La aplicación permitirá a los usuarios:
 - Realizar posteos. 
 - Agregar comentarios.
 
+###  Tecnologías Utilizadas
+🧠 **React**<br>
+Framework principal para construir el frontend con componentes reutilizables.
+Estructuración con function components, useState, useEffect y useContext.
+
+🌐 **React Router DOM**<br>
+Para navegación entre páginas (<Routes>, <Route>, <Navigate>, useNavigate, Link).
+Manejo de rutas protegidas (por ejemplo: redireccionar si no hay usuario logueado).
+
+👥 **React Context API**<br>
+AuthContext: para manejar el estado global del usuario autenticado (login, logout, persistencia con localStorage).
+
+💾 **localStorage**<br>
+Para mantener la sesión del usuario logueado entre recargas del navegador.
+
+🎨 **Bootstrap**<br>
+Sistema de diseño para componentes como botones, formularios, navbar, grid y clases como form-control, btn, container, etc.
+
+También utilizaste íconos de Bootstrap Icons.
+
+🎯 **TypeScript**<br>
+Tipado estático en todo el proyecto (Post, PostPopulated, props, interfaces, etc.).
+Mejora en detección de errores y legibilidad del código.
+
+🔥 **Sonner**<br>
+Librería de alertas visuales para notificaciones de éxito/error (toast.success, toast.error, toast.warning, etc.).
+
+🎬 **Framer Motion**<br>
+Animaciones suaves en botones y enlaces (motion.button, motion.div) como efectos whileHover, whileTap, scale, etc.
+
+🎨 **CSS personalizado**<br>
+Personalización de clases propias como input-rojo.
+Aplicación de estilos condicionales para modo oscuro (con ternarios y estilos inline).
+
+🖼️ **Fetch / API REST**<br>
+Consumo de endpoints de backend para traer datos de usuarios, posts, imágenes, comentarios, etc.
+Métodos usados: GET, POST, DELETE, con fetch().
+
+💡 **Funciones importantes (hooks y lógica)**<br>
+*useEffect:* para cargar datos al iniciar el componente.
+*useState:* para manejar estados locales como posts, loading, error, user, etc.
+*useNavigate:* para redirigir luego de login, logout o acciones.
 
 ### Instrucciones para correr la aplicación 
 -Es requisito tener instalado Node.js

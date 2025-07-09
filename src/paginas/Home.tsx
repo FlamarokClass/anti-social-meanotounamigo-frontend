@@ -28,9 +28,13 @@ export default function Home() {
   return (
     <PageWrapper> 
       <div className="container py-4">
-        <section className="text-center bg-light p-5 rounded shadow mb-4">
-          <h1 className="display-4">Bienvenid@ a UnaHur Anti-Social Net</h1>
-          <p className="lead">La red social donde lo antisocial está de moda 😎</p>
+        <section className="text-center mb-4">
+          <img
+            src="portada.png" 
+            alt="Banner Anti-Social"
+            className="img-fluid rounded shadow"
+            style={{ maxHeight: '400px', objectFit: 'cover', width: '100%' }}
+          />
         </section>
 
         <section className="mb-5">

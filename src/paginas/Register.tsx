@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUser, getUsers } from '../api/userApi';
 import { toast } from 'sonner';
-import { AnimatedButton } from '../components/Animated';
-import PageWrapper from '../components/Animated';
+import PageWrapper, { AnimatedButton } from '../components/Animated';
 
 export default function Register() {
   const [nickname, setNickName] = useState('');

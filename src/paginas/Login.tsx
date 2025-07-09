@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getUsers } from '../api/userApi'; 
 import { toast } from 'sonner';
-import { AnimatedButton } from '../components/Animated';
-import PageWrapper from '../components/Animated';
+import PageWrapper, { AnimatedButton } from '../components/Animated';
+
 
 export default function Login() {
   const [nickname, setNickName] = useState('');
@@ -43,14 +43,14 @@ export default function Login() {
           placeholder="nickname"
           value={nickname}
           onChange={(e) => setNickName(e.target.value)}
-          className="form-control mb-2"
+          className="form-control mb-2 input-rojo"
         />
         <input
           type="password"
           placeholder="Contraseña"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="form-control mb-2"
+          className="form-control mb-2 input-rojo"
         />
         <AnimatedButton type="submit" className="btn-success">
           Ingresar
