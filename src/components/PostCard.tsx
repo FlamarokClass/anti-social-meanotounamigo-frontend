@@ -11,14 +11,19 @@ interface Props {
 
 export default function PostCard({
   post,
-  cantidadComentarios,
   onModificar,
   onEliminar
 }: Props) {
   const etiquetas = Array.isArray(post.etiquetas)
-    ? post.etiquetas.map((e) =>
-        typeof e === 'string' ? e : e.nombre
-      )
+    ? post.etiquetas
+        .map((e) => {
+          if (typeof e === 'string') {
+            const esIdMongo = /^[a-f\d]{24}$/i.test(e);
+            return esIdMongo ? null : e;
+          }
+          return e.nombre;
+        })
+        .filter(Boolean)
     : [];
 
   return (
@@ -32,20 +37,13 @@ export default function PostCard({
 
         <p className="card-text">
           <strong>Etiquetas:</strong>{' '}
-          {etiquetas.length > 0
-            ? etiquetas.join(', ')
-            : <span className="text-muted">(sin etiquetas)</span>}
+          {etiquetas.length > 0 ? etiquetas.join(', ') : <span className="text-muted">(sin etiquetas)</span>}
         </p>
 
-        {typeof cantidadComentarios === 'number' && (
-          <p className="card-text">
-            <strong>Comentarios:</strong>{' '}
-            {cantidadComentarios > 0
-              ? `${cantidadComentarios} comentario(s)`
-              : <span className="text-muted">(ninguno visible)</span>}
-          </p>
-        )}
-        
+        <p className="card-text text-secondary mt-2">
+          💬 Hacé clic en <strong>"Ver más"</strong> para ver los comentarios
+        </p>
+
         <div className="d-flex gap-2 flex-wrap mt-3">
           <Link to={`/post/${post._id}`} className="btn btn-primary">
             Ver más
@@ -58,7 +56,7 @@ export default function PostCard({
           )}
 
           {onEliminar && (
-            <AnimatedButton className="btn btn-danger" onClick={onModificar}>
+            <AnimatedButton className="btn btn-danger" onClick={onEliminar}>
               Eliminar
             </AnimatedButton>
           )}

@@ -6,6 +6,14 @@ import { API_URL } from '../config/constants';
 import { Post } from '../types/mongoSchemas';
 import { toast } from 'sonner';
 import PageWrapper from '../components/Animated';
+import EditPostModal from '../components/EditPostModal';
+import { Modal } from 'react-bootstrap';
+
+interface Tag {
+  _id?: string;
+  id?: string;
+  nombre: string;
+}
 
 type PostConContador = Post & { comentariosVisibles?: number };
 
@@ -14,20 +22,54 @@ export default function Perfil() {
   const [posts, setPosts] = useState<PostConContador[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [postEditar, setPostEditar] = useState<PostConContador | null>(null);
+  const [availableTags, setAvailableTags] = useState<Tag[]>([]);
+  const [postEliminarId, setPostEliminarId] = useState<string | null>(null);
+  const [eliminando, setEliminando] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user) return;
+    const fetchData = async () => {
+      if (!user) return;
 
-    fetch(`${API_URL}/user/${user.id}/post`)
-      .then((res) => {
-        if (!res.ok) throw new Error('Error al obtener posts');
-        return res.json();
-      })
-      .then((data: PostConContador[]) => {
-        setPosts(data);
-      })
-      .catch((err) => {
+      const userId = user.id ?? user._id;
+      if (!userId) {
+        setError('ID de usuario no encontrado');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const [postsRes, tagsRes] = await Promise.all([
+          fetch(`${API_URL}/user/${userId}/post`),
+          fetch(`${API_URL}/tag`)
+        ]);
+
+        if (!postsRes.ok || !tagsRes.ok) throw new Error('Error al obtener datos');
+
+        const postsData: PostConContador[] = await postsRes.json();
+        const tagsData: Tag[] = await tagsRes.json();
+
+        setAvailableTags(tagsData);
+
+        const postsTransformados = postsData.map((post) => {
+          const etiquetasNombres = post.etiquetas.map(tag => {
+            if (typeof tag === 'string') {
+              const encontrado = tagsData.find(t => (t.id ?? t._id) === tag);
+              return encontrado?.nombre || tag;
+            }
+            return tag.nombre || '';
+          });
+
+          return {
+            ...post,
+            _id: post._id ?? (post as any).id,
+            etiquetas: etiquetasNombres
+          };
+        }).filter(post => !!post._id);
+
+        setPosts(postsTransformados);
+      } catch (err: any) {
         toast.error('No se pudieron obtener tus publicaciones', {
           description: err.message || 'Ocurrió un error inesperado.',
           action: {
@@ -35,8 +77,13 @@ export default function Perfil() {
             onClick: () => window.location.reload()
           }
         });
-      })
-      .finally(() => setLoading(false));
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [user]);
 
   const manejarLogout = () => {
@@ -46,25 +93,68 @@ export default function Perfil() {
   };
 
   const handleModificarPost = (post: PostConContador) => {
-    navigate(`/edit/${post._id}`);
+    setPostEditar(post);
   };
 
-  const handleEliminarPost = async (postId: string) => {
-    if (!window.confirm('¿Estás seguro de que querés eliminar este post?')) return;
+  const confirmarEliminarPost = (postId: string) => {
+    setPostEliminarId(postId);
+  };
+
+  const eliminarPostConfirmado = async () => {
+    if (!postEliminarId) return;
+    setEliminando(true);
 
     try {
-      const res = await fetch(`${API_URL}/post/${postId}`, {
+      const res = await fetch(`${API_URL}/post/${postEliminarId}`, {
         method: 'DELETE',
       });
 
       if (!res.ok) throw new Error('Error al eliminar el post');
 
-      setPosts((prev) => prev.filter((p) => p._id !== postId));
+      setPosts((prev) => prev.filter((p) => p._id !== postEliminarId));
       toast.success('Publicación eliminada correctamente');
+      setPostEliminarId(null);
     } catch (err: any) {
-      console.error(err);
-      setError(err.message);
       toast.error('No se pudo eliminar la publicación', {
+        description: err.message || 'Ocurrió un error inesperado.',
+      });
+    } finally {
+      setEliminando(false);
+    }
+  };
+
+  const guardarPostEditado = async (actualizado: Partial<Post>) => {
+    if (!postEditar) return;
+
+    try {
+      const res = await fetch(`${API_URL}/post/${postEditar._id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(actualizado),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || `Error ${res.status}`);
+      }
+
+      const data = await res.json();
+
+      const etiquetasNombres = (data.post.etiquetas || []).map((id: string) => {
+        const found = availableTags.find(tag => (tag.id ?? tag._id) === id);
+        return found?.nombre || id;
+      });
+
+      setPosts((prev) =>
+        prev.map((p) =>
+          p._id === postEditar._id ? { ...p, ...data.post, etiquetas: etiquetasNombres } : p
+        )
+      );
+
+      toast.success('Post actualizado correctamente');
+      setPostEditar(null);
+    } catch (err: any) {
+      toast.error('No se pudo actualizar el post', {
         description: err.message || 'Ocurrió un error inesperado.',
       });
     }
@@ -92,11 +182,44 @@ export default function Perfil() {
           <PostCard
             key={post._id}
             post={post}
-            cantidadComentarios={post.comentariosVisibles ?? 0}
+            cantidadComentarios={undefined}
             onModificar={() => handleModificarPost(post)}
-            onEliminar={() => handleEliminarPost(post._id)}
+            onEliminar={() => confirmarEliminarPost(post._id)}
           />
         ))}
+
+        {postEditar && (
+          <EditPostModal
+            post={postEditar}
+            onClose={() => setPostEditar(null)}
+            onSave={guardarPostEditado}
+          />
+        )}
+
+        <Modal show={!!postEliminarId} onHide={() => setPostEliminarId(null)} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Confirmar eliminación</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>¿Estás seguro de que querés eliminar esta publicación?</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <button
+              className="btn btn-secondary"
+              onClick={() => setPostEliminarId(null)}
+              disabled={eliminando}
+            >
+              Cancelar
+            </button>
+            <button
+              className="btn btn-danger"
+              onClick={eliminarPostConfirmado}
+              disabled={eliminando}
+            >
+              {eliminando ? 'Eliminando...' : 'Eliminar'}
+            </button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </PageWrapper>
   );

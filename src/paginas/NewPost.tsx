@@ -14,7 +14,6 @@ export default function NewPost() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  // obtener etiquetas del backend
   useEffect(() => {
     fetch(`${API_URL}/tag`)
       .then(res => res.json())
@@ -25,11 +24,9 @@ export default function NewPost() {
       });
   }, []);
 
-  // manejar submit del formulario
   const manejarSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // validar que el usuario este autenticado
     const userId = user?._id || user?.id;
     if (!user || !userId) {
       toast.warning("Error: el usuario no está autenticado correctamente.");
@@ -37,14 +34,12 @@ export default function NewPost() {
       return;
     }
 
-    // validar que las etiquetas sean validas
     const etiquetasValidas = selectedTags.every(id => /^[0-9a-fA-F]{24}$/.test(id));
     if (!etiquetasValidas) {
       toast.warning("Alguna de las etiquetas seleccionadas no es válida.");
       return;
     }
 
-    // crear el post
     try {
       await createPost({
         descripcion,

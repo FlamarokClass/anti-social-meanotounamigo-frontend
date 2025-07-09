@@ -18,6 +18,14 @@ export default function PostDetalleFlexible({ post }: Props) {
     setComentarios([...comentarios, nuevoComentario]);
   };
 
+  const editarComentario = (comentarioEditado: CommentPopulated) => {
+    setComentarios(comentarios.map(c => c._id === comentarioEditado._id ? comentarioEditado : c));
+  };
+
+  const eliminarComentario = (idComentario: string) => {
+    setComentarios(comentarios.filter(c => c._id !== idComentario));
+  };
+
   return (
     <PageWrapper>
       <div className="container mt-4">
@@ -41,7 +49,13 @@ export default function PostDetalleFlexible({ post }: Props) {
         {comentarios.length > 0 ? (
           <ul className="list-group mb-4">
             {comentarios.map((comentario) => (
-              <ComentarioItem key={comentario._id || Math.random()} comentario={comentario} />
+              <ComentarioItem
+                key={comentario._id || Math.random()}
+                comentario={comentario}
+                userId={user?._id}
+                onEditar={editarComentario}
+                onEliminar={eliminarComentario}
+              />
             ))}
           </ul>
         ) : (
