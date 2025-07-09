@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PostPopulated, Comentario } from '../types/mongoSchemas';
+import { PostPopulated, CommentPopulated } from '../types/mongoSchemas';
 import ComentarioItem from './ComentarioItem';
 import FormularioComentario from './FormularioComentario';
 import { useAuth } from '../context/AuthContext';
@@ -11,11 +11,11 @@ interface Props {
 
 export default function PostDetalleFlexible({ post }: Props) {
   const { user } = useAuth();
-  const [comentarios, setComentarios] = useState(post.comentarios ?? []);
+  const [comentarios, setComentarios] = useState<CommentPopulated[]>(post.comentarios ?? []);
   const etiquetas = post.etiquetas.map((e) => e.nombre);
 
-  const agregarComentario = (nuevoComentario: Comentario) => {
-  setComentarios([...comentarios, nuevoComentario]);
+  const agregarComentario = (nuevoComentario: CommentPopulated) => {
+    setComentarios([...comentarios, nuevoComentario]);
   };
 
   return (
@@ -49,7 +49,7 @@ export default function PostDetalleFlexible({ post }: Props) {
         )}
 
         {user && (
-          <FormularioComentario postId={post._id} onComentarioAgregado={agregarComentario} />
+          <FormularioComentario postId={post._id!} onComentarioAgregado={agregarComentario} />
         )}
       </div>
     </PageWrapper>

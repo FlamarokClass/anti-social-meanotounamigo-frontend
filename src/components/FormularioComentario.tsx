@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { API_URL } from '../config/constants';
-import { Comment } from '../types/mongoSchemas'; // Asegurate de tener este tipo
+import { CommentPopulated } from '../types/mongoSchemas';
 import { toast } from 'sonner';
 import { AnimatedButton } from '../components/Animated';
 
 interface Props {
   postId: string;
-  onComentarioAgregado?: (comentario: Comment) => void;
+  onComentarioAgregado?: (comentario: CommentPopulated) => void;
 }
 
 export default function FormularioComentario({ postId, onComentarioAgregado }: Props) {
@@ -34,18 +34,19 @@ export default function FormularioComentario({ postId, onComentarioAgregado }: P
       if (!res.ok) throw new Error('Error al enviar el comentario');
 
       const resultado = await res.json();
-      const nuevoComentario: Comment = {
+      const nuevoComentario: CommentPopulated = {
         ...resultado,
         user: {
-          _id: user._id || user.id,
+          _id: user._id || user.id || '',
           nickname: user.nickname,
+          id: user.id || user._id || '',
         },
       };
 
       onComentarioAgregado?.(nuevoComentario);
       setComentario('');
     } catch (err) {
-      toast.error('Error al enviar el comentarioe');
+      toast.error('Error al enviar el comentario');
     } finally {
       setCargando(false);
     }
@@ -61,13 +62,13 @@ export default function FormularioComentario({ postId, onComentarioAgregado }: P
         disabled={cargando}
         required
       />
-    <AnimatedButton
-      type="submit"
-      className="btn btn-secondary mt-2"
-      disabled={cargando}
-    >
-      {cargando ? 'Enviando...' : 'Agregar comentario'}
-    </AnimatedButton>
-        </form>
+      <AnimatedButton
+        type="submit"
+        className="btn btn-secondary mt-2"
+        disabled={cargando}
+      >
+        {cargando ? 'Enviando...' : 'Agregar comentario'}
+      </AnimatedButton>
+    </form>
   );
 }

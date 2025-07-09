@@ -36,7 +36,7 @@ export default function App() {
       >
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/mi-perfil" element={user ? <Perfil /> : <Navigate to="/login" />} />
+          <Route path="/mi-perfil" element={user ? <Perfil/> : <Navigate to="/login" />} />
           <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
           <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
           <Route path="/post/:id" element={<PostDetail />} />
