@@ -60,7 +60,7 @@ export default function Footer({ darkMode }: FooterProps) {
                 Universidad Nacional de Hurlingham
               </p>
               <div className="mt-3">
-                <a href="#" className="text-white me-3" style={{ fontSize: '1.2rem' }}>
+                <a href="https://github.com/AlexisF12/anti-social-meanotounamigo-frontend.git" className="text-white me-3" style={{ fontSize: '1.2rem' }}>
                   <i className="bi bi-github"></i>
                 </a>
                 <a href="#" className="text-white me-3" style={{ fontSize: '1.2rem' }}>

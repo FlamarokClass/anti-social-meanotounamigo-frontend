@@ -80,7 +80,6 @@ export default function Home() {
             <PostCard
               key={post._id}
               post={post}
-              cantidadComentarios={post.comentariosVisibles}
             />
           ))}
         </section>

@@ -127,7 +127,7 @@ export default function Perfil() {
     if (!postEditar) return;
 
     try {
-      const res = await fetch(`${API_URL}/post/${postEditar._id}`, {
+      const res = await fetch(`${API_URL}/post/${postEditar.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(actualizado),
@@ -185,7 +185,6 @@ export default function Perfil() {
           <PostCard
             key={post._id}
             post={post}
-            cantidadComentarios={undefined}
             onModificar={() => handleModificarPost(post)}
             onEliminar={() => confirmarEliminarPost(post._id!)}
           />

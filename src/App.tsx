@@ -11,7 +11,6 @@ import PostDetail from '../src/paginas/PostDetail';
 import { Toaster } from 'sonner';
 import { useAuth } from './context/AuthContext';
 
-
 export default function App() {
   const { user } = useAuth();
 

@@ -2,7 +2,6 @@
 /// <reference types="vite/client" /> 
 const API = import.meta.env.VITE_API_URL;
 import { PostImage } from '../types/mongoSchemas'
-import { UpdatePostParams } from '../types/mongoSchemas'
 
 export const getPosts = async () => {
   const res = await fetch(`${API}/post`);

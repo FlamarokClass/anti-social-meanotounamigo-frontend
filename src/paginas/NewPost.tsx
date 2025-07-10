@@ -138,7 +138,7 @@ export default function NewPost() {
                     try {
                       const nueva = await createTag(nombreConHash);
                       setTags(prev => [...prev, nueva]);
-                      setSelectedTags(prev => [...prev, nueva._id]);
+                      setSelectedTags(prev => [...prev, nueva.id]);
                       setNuevoTag('');
                       toast.success("Etiqueta creada");
                     } catch {

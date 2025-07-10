@@ -2,11 +2,10 @@ import { Link } from 'react-router-dom';
 import { Post } from '../types/mongoSchemas';
 import { AnimatedButton } from '../components/Animated';
 import { motion } from "framer-motion"; 
-const MotionLink = motion(Link);
+const MotionLink = motion.create(Link);
 
 interface Props {
   post: Post;
-  cantidadComentarios?: number;
   onModificar?: () => void;
   onEliminar?: () => void;
 }
