@@ -3,8 +3,8 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from "../config/constants";
 import { Tag } from '../types/mongoSchemas';
-import { createPost } from '../api/postApi';
 import { toast } from 'sonner';
+import { createPost, uploadPostImage, assignImagesToPost } from '../api/postApi';
 import PageWrapper, { AnimatedButton } from '../components/Animated';
 
 export default function NewPost() {
@@ -12,6 +12,7 @@ export default function NewPost() {
   const [tags, setTags] = useState<Tag[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const { user } = useAuth();
+  const [files, setFiles] = useState<File[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,6 +24,10 @@ export default function NewPost() {
         toast.error("No se pudieron cargar las etiquetas");
       });
   }, []);
+  const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = e.target.files ? Array.from(e.target.files) : [];
+    setFiles(selectedFiles);
+  };
 
   const manejarSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,18 +46,26 @@ export default function NewPost() {
     }
 
     try {
-      await createPost({
-        descripcion,
-        etiquetas: selectedTags,
-        user: userId,
-      });
-      
-      navigate('/profile');
-    } catch (error: any) {
-      console.error("Error al crear el post:", error.message);
-      toast.error(`Hubo un error al crear la publicación: ${error.message}`);
-    }
-  };
+          const newPost = await createPost({
+            descripcion,
+            etiquetas: selectedTags,
+            user: userId,
+          });
+          if (files.length > 0) {
+            const uploadedIds: string[] = [];
+            for (const file of files) {
+              const { image } = await uploadPostImage(file);
+              uploadedIds.push(image.id!);
+            }
+            await assignImagesToPost(newPost.id, uploadedIds);
+          }
+          toast.success("Post creado con éxito");
+          navigate('/profile');
+        }
+    catch (error: any) {
+          toast.error(`Error al crear post: ${error.message || error}`);
+        }
+      };
 
   return (
     <PageWrapper>
@@ -74,13 +87,23 @@ export default function NewPost() {
               setSelectedTags([...e.target.selectedOptions].map(o => o.value))
             }
           >
-            {tags.map((tag, i) => (
-              <option key={i} value={tag['id']}>
+            {tags.map((tag) => (
+              <option key={tag.id} value={tag.id}>
                 {tag.nombre}
               </option>
             ))}
           </select>
 
+          <label htmlFor="imageUpload" className="form-label">Seleccionar imágenes</label>
+          <input
+            id="imageUpload"
+            type="file"
+            className="form-control mb-2"
+            accept="image/*"
+            multiple
+            onChange={handleFilesChange}
+          />
+          
         <AnimatedButton type="submit" className="btn-success">
           Publicar
         </AnimatedButton>

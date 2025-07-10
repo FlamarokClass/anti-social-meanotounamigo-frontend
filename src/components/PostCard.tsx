@@ -30,7 +30,21 @@ export default function PostCard({
     <div className="card mb-3 shadow-sm">
       <div className="card-body">
         <h5 className="card-title">{post.descripcion}</h5>
-
+        {Array.isArray(post.imagenes) && post.imagenes.length > 0 && (
+          <div className="mb-3 d-flex flex-wrap gap-2">
+            {post.imagenes.map((img, i) => {
+              const url = typeof img === 'string' ? img : img.url;
+              return (
+                url && (<img key={i} src={url} alt={`Imagen ${i + 1}`} className="img-thumbnail" style={{ maxWidth: '150px', height: 'auto' }}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = '/errorImg.jpg';
+                }}
+                />)
+              );
+            })}
+        </div>
+        )}
         <p className="card-text">
           <strong>Fecha:</strong> {post.fecha}
         </p>

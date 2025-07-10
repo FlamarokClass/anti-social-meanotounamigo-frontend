@@ -34,6 +34,28 @@ export default function PostDetalleFlexible({ post }: Props) {
         <div className="card shadow-sm mb-4">
           <div className="card-body">
             <h5 className="card-title">{post.descripcion}</h5>
+            {Array.isArray(post.imagenes) && post.imagenes.length > 0 && (
+              <div className="mb-3 d-flex flex-wrap gap-2">
+                {post.imagenes.map((img, i) => {
+                  const url = typeof img === 'string' ? img : img.url;
+                  return (
+                    url && (
+                      <img
+                        key={i}
+                        src={url}
+                        alt={`Imagen ${i + 1}`}
+                        className="img-thumbnail"
+                        style={{ maxWidth: '600px', height: 'auto' }}
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = '/errorImg.jpg';
+                        }}
+                      />
+                    )
+                  );
+                })}
+              </div>
+            )}
             <p><strong>Fecha:</strong> {post.fecha}</p>
             <p>
               <strong>Etiquetas:</strong>{' '}

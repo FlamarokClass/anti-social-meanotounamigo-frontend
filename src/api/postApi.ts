@@ -1,6 +1,7 @@
 // Habilita tipado para import.meta.env.VITE_*
 /// <reference types="vite/client" /> 
 const API = import.meta.env.VITE_API_URL;
+import { PostImage } from '../types/mongoSchemas'
 
 export const getPosts = async () => {
   const res = await fetch(`${API}/post`);
@@ -37,5 +38,44 @@ export const deletePost = async (id: string) => {
     method: 'DELETE'
   });
   if (!res.ok) throw new Error("Error al eliminar post");
+  return res.json();
+};
+export const uploadPostImage = async (file: File): Promise<{ image: PostImage }> => {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  const res = await fetch(`${API}/post-image`, {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!res.ok) throw new Error("Error al subir imagen");
+  return res.json();
+};
+
+export const deleteImagesFromPost = async (postId: string, imageIds: string[]) => {
+  const res = await fetch(`${API}/post/${postId}/images`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ imageIds }),
+  });
+
+  if (!res.ok) throw new Error("Error al eliminar imágenes del post");
+  return res.json();
+};
+
+export const getAllPostImages = async (): Promise<PostImage[]> => {
+  const res = await fetch(`${API}/post-image`);
+  if (!res.ok) throw new Error("Error al obtener imágenes");
+  return res.json();
+};
+export const assignImagesToPost = async (postId: string, imageIds: string[]) => {
+  const res = await fetch(`${API}/post/${postId}/images`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ imageIds }),
+  });
+
+  if (!res.ok) throw new Error("Error al asignar imágenes al post");
   return res.json();
 };

@@ -40,10 +40,11 @@ export interface Tag {
 type EtiquetaFlexible = string | Tag;
 
 export interface Post {
-  _id: string;
+  _id?: string;
+  id?: string;
   descripcion: string;
   fecha: string;
-  imagenes: string[];
+  imagenes: (string | PostImage)[];
   etiquetas: EtiquetaFlexible[];
   user: string;
 }
@@ -54,7 +55,13 @@ export interface PostPopulated {
   id?: string;
   descripcion: string;
   fecha: string;
+  imagenes: (string | PostImage)[];
   etiquetas: Tag[];
   user: Pick<User, '_id' | 'id' | 'nickname' | 'email'>;
   comentarios: CommentPopulated[];
+}
+export interface PostImage {
+  _id?: string;
+   id?: string;
+  url: string;
 }

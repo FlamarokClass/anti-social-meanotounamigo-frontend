@@ -184,7 +184,7 @@ export default function Perfil() {
             post={post}
             cantidadComentarios={undefined}
             onModificar={() => handleModificarPost(post)}
-            onEliminar={() => confirmarEliminarPost(post._id)}
+            onEliminar={() => confirmarEliminarPost(post._id!)}
           />
         ))}
 
