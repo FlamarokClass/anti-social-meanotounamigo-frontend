@@ -15,7 +15,7 @@ import { useAuth } from './context/AuthContext';
 export default function App() {
   const { user } = useAuth();
 
-  // Estado para modo oscuro
+  
   const [darkMode, setDarkMode] = useState(false);
   const toggleDarkMode = () => setDarkMode(prev => !prev);
 

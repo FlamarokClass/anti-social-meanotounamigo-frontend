@@ -45,7 +45,7 @@ export default function Home() {
           </p>
         </section>
 
-        <section className="mb-5"> {/*ESTO CAMBIÉ */}
+        <section className="mb-5"> 
           <h2>¿Quiénes somos?</h2>
           <ul className="fs-4">
             <li>👨‍🎓 Anderson Rojas, Franco Leonel.</li>

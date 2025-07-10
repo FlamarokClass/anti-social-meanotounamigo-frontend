@@ -85,7 +85,7 @@ C.completar los campos vacios
 **PASSWORD** = 1qaz!QAZ
 
 
-### Dockerizar la app
+## Dockerizar la app
 Crea una imagen de la aplicación:
 ```bash
 docker-compose up -d

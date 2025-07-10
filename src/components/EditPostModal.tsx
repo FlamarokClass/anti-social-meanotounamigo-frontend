@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 interface EditPostModalProps {
   post: Post | null;
   onClose: () => void;
-  onSave: (formData: FormData) => Promise<void>; // ¡onSave ahora espera FormData!
+  onSave: (formData: FormData) => Promise<void>; 
 }
 
 interface Tag {

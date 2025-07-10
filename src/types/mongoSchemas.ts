@@ -65,7 +65,7 @@ export interface Post {
 export interface UpdatePostParams {
   postId: string;
   descripcion: string;
-  etiquetas: string[]; // IDs de etiquetas
-  imagenesExistentes: (string | PostImage)[]; // URLs de imágenes que se mantienen
-  imagenesNuevas: (string | PostImage)[] // Nuevos archivos
+  etiquetas: string[]; 
+  imagenesExistentes: (string | PostImage)[]; 
+  imagenesNuevas: (string | PostImage)[] 
 }
