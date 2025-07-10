@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../config/constants';
 import { Post } from '../types/mongoSchemas';
 import { toast } from 'sonner';
-import PageWrapper from '../components/Animated';
+import PageWrapper, { AnimatedButton } from '../components/Animated';
 import EditPostModal from '../components/EditPostModal';
 import { Modal } from 'react-bootstrap';
 
@@ -167,9 +167,12 @@ export default function Perfil() {
       <div className="container mt-4">
         <h2>Perfil de {user.nickname}</h2>
 
-        <button className="btn btn-danger mb-3" onClick={manejarLogout}>
+        <AnimatedButton 
+          className="btn btn-danger mb-3"
+          onClick={manejarLogout}
+          >
           Cerrar sesión
-        </button>
+        </AnimatedButton>
 
         {loading && <p>Cargando publicaciones...</p>}
         {error && <p className="text-danger">{error}</p>}

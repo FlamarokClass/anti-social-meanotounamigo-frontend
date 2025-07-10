@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { Post } from '../types/mongoSchemas';
 import { AnimatedButton } from '../components/Animated';
+import { motion } from "framer-motion"; 
+const MotionLink = motion(Link);
 
 interface Props {
   post: Post;
@@ -59,9 +61,17 @@ export default function PostCard({
         </p>
 
         <div className="d-flex gap-2 flex-wrap mt-3">
-          <Link to={`/post/${post._id}`} className="btn btn-primary">
+          <MotionLink 
+            to={`/post/${post._id}`}
+            className="btn btn-primary"
+            whileHover={{
+              scale: 1.15,
+              boxShadow: "0px 0px 18px rgb(241, 5, 5)",
+            }}
+            whileTap={{ scale: 0.95 }}
+          >
             Ver más
-          </Link>
+          </MotionLink>
 
           {onModificar && (
             <AnimatedButton className="btn btn-warning" onClick={onModificar}>

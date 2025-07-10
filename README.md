@@ -23,11 +23,11 @@ Framework principal para construir el frontend con componentes reutilizables.
 Estructuración con function components, useState, useEffect y useContext.
 
 🌐 **React Router DOM**<br>
-Para navegación entre páginas (<Routes>, <Route>, <Navigate>, useNavigate, Link).
+Para navegación entre páginas (Routes, Route, Navigate, useNavigate, Link).
 Manejo de rutas protegidas (por ejemplo: redireccionar si no hay usuario logueado).
 
 👥 **React Context API**<br>
-AuthContext: para manejar el estado global del usuario autenticado (login, logout, persistencia con localStorage).
+*AuthContext*: para manejar el estado global del usuario autenticado (login, logout, persistencia con localStorage).
 
 💾 **localStorage**<br>
 Para mantener la sesión del usuario logueado entre recargas del navegador.
@@ -52,13 +52,13 @@ Personalización de clases propias como input-rojo.
 Aplicación de estilos condicionales para modo oscuro (con ternarios y estilos inline).
 
 🖼️ **Fetch / API REST**<br>
-Consumo de endpoints de backend para traer datos de usuarios, posts, imágenes, comentarios, etc.
+Consumo de endpoints de backend para traer datos de usuarios, posts, imágenes, comentarios, etc.<br>
 Métodos usados: GET, POST, DELETE, con fetch().
 
-💡 *Funciones importantes (hooks y lógica)*<br>
-useEffect: para cargar datos al iniciar el componente.<br>
-useState: para manejar estados locales como posts, loading, error, user, etc.<br>
-useNavigate: para redirigir luego de login, logout o acciones.<br>
+💡 **Funciones importantes (hooks y lógica)**<br>
+*useEffect*: para cargar datos al iniciar el componente.<br>
+*useState*: para manejar estados locales como posts, loading, error, user, etc.<br>
+*useNavigate*: para redirigir luego de login, logout o acciones.<br>
 
 ### Instrucciones para correr la aplicación 
 -Es requisito tener instalado Node.js
@@ -77,12 +77,12 @@ A. Crearse en raiz un .env
 B.copias allí el contenido de .env.example 
 C.completar los campos vacios 
 
-# Mongo DB 
-USERNAME = se peude dejar en root, como se usa por defecto
-PASSWORD = se peude dejar en example, como se usa por defecto
+## Mongo DB 
+*USERNAME* = se puede dejar en root, como se usa por defecto<br>
+*PASSWORD* = se puede dejar en example, como se usa por defecto
 
-# Redis
-PASSWORD = 1qaz!QAZ
+## Redis
+**PASSWORD** = 1qaz!QAZ
 
 
 ### Dockerizar la app
