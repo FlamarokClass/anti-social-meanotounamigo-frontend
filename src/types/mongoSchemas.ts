@@ -1,3 +1,5 @@
+type EtiquetaFlexible = string | Tag;
+
 export interface User {
   _id?: string;  // opcional porque puede venir como _id
   id?: string;   // opcional porque puede venir como id (por el transform)
@@ -35,21 +37,6 @@ export interface Tag {
   id?: string;
   nombre: string;
 }
-
-// post sin populate (usado en /posts y /posts/:id)
-type EtiquetaFlexible = string | Tag;
-
-export interface Post {
-  _id?: string;
-  id?: string;
-  descripcion: string;
-  fecha: string;
-  imagenes: (string | PostImage)[];
-  etiquetas: EtiquetaFlexible[];
-  user: string;
-}
-
-// post con populate y comentarios (usado en /posts/:id/full)
 export interface PostPopulated {
   _id?: string;
   id?: string;
@@ -62,6 +49,23 @@ export interface PostPopulated {
 }
 export interface PostImage {
   _id?: string;
-   id?: string;
+  id?: string;
   url: string;
+}
+
+export interface Post {
+  _id?: string;
+  id?: string;
+  descripcion: string;
+  fecha: string;
+  imagenes: (string | PostImage)[];
+  etiquetas: EtiquetaFlexible[];
+  user: string;
+}
+export interface UpdatePostParams {
+  postId: string;
+  descripcion: string;
+  etiquetas: string[]; // IDs de etiquetas
+  imagenesExistentes: (string | PostImage)[]; // URLs de imágenes que se mantienen
+  imagenesNuevas: (string | PostImage)[] // Nuevos archivos
 }

@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 interface EditPostModalProps {
   post: Post | null;
   onClose: () => void;
-  onSave: (updatedPost: Partial<Post>) => Promise<void>;
+  onSave: (formData: FormData) => Promise<void>; // ¡onSave ahora espera FormData!
 }
 
 interface Tag {
@@ -21,6 +21,8 @@ export default function EditPostModal({ post, onClose, onSave }: EditPostModalPr
   const [etiquetas, setEtiquetas] = useState('');
   const [availableTags, setAvailableTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(false);
+  const [imagenes, setImagenes] = useState<string[]>([]);
+  const [nuevasImagenes, setNuevasImagenes] = useState<File[]>([]);
 
   useEffect(() => {
     const init = async () => {
@@ -35,12 +37,43 @@ export default function EditPostModal({ post, onClose, onSave }: EditPostModalPr
       const etiquetasNombres = post.etiquetas
         .map(tag => (typeof tag === 'string' ? tags.find(t => t.id === tag)?.nombre || tag : tag.nombre || ''))
         .join(', ');
-
       setEtiquetas(etiquetasNombres);
+
+      const imagenesActuales = Array.isArray(post.imagenes)
+        ? post.imagenes.map((img: any) => (typeof img === 'string' ? img : img.url))
+        : [];
+      setImagenes(imagenesActuales);
     };
 
     init();
   }, [post]);
+
+  const handleAddTag = (tagName: string) => {
+    const currentTags = etiquetas.split(',').map(t => t.trim());
+    if (!currentTags.includes(tagName)) {
+      setEtiquetas([...currentTags, tagName].join(', '));
+    }
+  };
+
+  const handleRemoveTag = (tagToRemove: string) => {
+    const currentTags = etiquetas.split(',').map(t => t.trim());
+    const newTags = currentTags.filter(t => t !== tagToRemove);
+    setEtiquetas(newTags.join(', '));
+  };
+
+  const eliminarImagenExistente = (url: string) => {
+    setImagenes(prev => prev.filter(img => img !== url));
+  };
+
+  const handleNuevaImagen = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setNuevasImagenes([...nuevasImagenes, ...Array.from(e.target.files)]);
+    }
+  };
+
+  const eliminarNuevaImagen = (index: number) => {
+    setNuevasImagenes(prev => prev.filter((_, i) => i !== index));
+  };
 
   const handleSave = async () => {
     if (!post) return;
@@ -63,33 +96,21 @@ export default function EditPostModal({ post, onClose, onSave }: EditPostModalPr
       return;
     }
 
-    const dataToSend = {
-      descripcion,
-      etiquetas: etiquetasIds,
-    };
+    const formData = new FormData();
+    formData.append('descripcion', descripcion);
+    etiquetasIds.forEach(id => formData.append('etiquetas[]', id));
+    imagenes.forEach(url => formData.append('imagenesExistentes[]', url));
+    nuevasImagenes.forEach(file => formData.append('imagenesNuevas', file));
 
     try {
       setLoading(true);
-      await onSave(dataToSend);
+      await onSave(formData);
       onClose();
     } catch {
       toast.error('Error al actualizar el post');
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleAddTag = (tagName: string) => {
-    const currentTags = etiquetas.split(',').map(t => t.trim());
-    if (!currentTags.includes(tagName)) {
-      setEtiquetas([...currentTags, tagName].join(', '));
-    }
-  };
-
-  const handleRemoveTag = (tagToRemove: string) => {
-    const currentTags = etiquetas.split(',').map(t => t.trim());
-    const newTags = currentTags.filter(t => t !== tagToRemove);
-    setEtiquetas(newTags.join(', '));
   };
 
   return (
@@ -143,7 +164,7 @@ export default function EditPostModal({ post, onClose, onSave }: EditPostModalPr
         {etiquetas && (
           <>
             <Form.Label>Etiquetas actuales:</Form.Label>
-            <div className="d-flex flex-wrap gap-2">
+            <div className="d-flex flex-wrap gap-2 mb-3">
               {etiquetas
                 .split(',')
                 .map(tag => tag.trim())
@@ -169,6 +190,57 @@ export default function EditPostModal({ post, onClose, onSave }: EditPostModalPr
             </div>
           </>
         )}
+
+        <Form.Group className="mb-3">
+          <Form.Label>Imágenes actuales:</Form.Label>
+          <div className="d-flex flex-wrap gap-2">
+            {imagenes.map((url, i) => (
+              <div key={i} className="position-relative">
+                <img
+                  src={url}
+                  alt={`img-${i}`}
+                  className="img-thumbnail"
+                  style={{ width: 100, height: 'auto' }}
+                />
+                <Button
+                  size="sm"
+                  variant="danger"
+                  className="position-absolute top-0 end-0"
+                  onClick={() => eliminarImagenExistente(url)}
+                >
+                  ×
+                </Button>
+              </div>
+            ))}
+          </div>
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>Agregar nuevas imágenes:</Form.Label>
+          <Form.Control type="file" multiple accept="image/*" onChange={handleNuevaImagen} />
+          {nuevasImagenes.length > 0 && (
+            <div className="d-flex flex-wrap gap-2 mt-2">
+              {nuevasImagenes.map((img, i) => (
+                <div key={i} className="position-relative">
+                  <img
+                    src={URL.createObjectURL(img)}
+                    alt={`new-img-${i}`}
+                    className="img-thumbnail"
+                    style={{ width: 100, height: 'auto' }}
+                  />
+                  <Button
+                    size="sm"
+                    variant="danger"
+                    className="position-absolute top-0 end-0"
+                    onClick={() => eliminarNuevaImagen(i)}
+                  >
+                    ×
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
+        </Form.Group>
       </Modal.Body>
 
       <Modal.Footer>

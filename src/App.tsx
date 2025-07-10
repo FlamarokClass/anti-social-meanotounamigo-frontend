@@ -28,6 +28,7 @@ export default function App() {
        <main
         style={{
           paddingTop: '70px',
+          paddingBottom: '2rem',
           minHeight: 'calc(100vh - 140px)',
           backgroundColor: darkMode ? '#5e5e5e' : 'transparent',
           backgroundImage: darkMode

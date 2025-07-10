@@ -19,11 +19,11 @@ export default function PostDetalleFlexible({ post }: Props) {
   };
 
   const editarComentario = (comentarioEditado: CommentPopulated) => {
-    setComentarios(comentarios.map(c => c._id === comentarioEditado._id ? comentarioEditado : c));
+    setComentarios(comentarios.map(c => c.id === comentarioEditado.id ? comentarioEditado : c));
   };
 
   const eliminarComentario = (idComentario: string) => {
-    setComentarios(comentarios.filter(c => c._id !== idComentario));
+    setComentarios(comentarios.filter(c => c.id !== idComentario));
   };
 
   return (
@@ -72,9 +72,8 @@ export default function PostDetalleFlexible({ post }: Props) {
           <ul className="list-group mb-4">
             {comentarios.map((comentario) => (
               <ComentarioItem
-                key={comentario._id || Math.random()}
+                key={comentario.id || Math.random()}
                 comentario={comentario}
-                userId={user?._id}
                 onEditar={editarComentario}
                 onEliminar={eliminarComentario}
               />

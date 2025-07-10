@@ -1,112 +1,140 @@
 import { useState } from 'react';
 import { CommentPopulated } from '../types/mongoSchemas';
+import { useAuth } from '../context/AuthContext';
 import { API_URL } from '../config/constants';
+import { toast } from 'sonner';
 
 interface Props {
   comentario: CommentPopulated;
-  userId?: string;
   onEditar: (comentarioEditado: CommentPopulated) => void;
   onEliminar: (idComentario: string) => void;
 }
 
-export default function ComentarioItem({ comentario, userId, onEditar, onEliminar }: Props) {
-  const [modoEdicion, setModoEdicion] = useState(false);
-  const [contenidoEditado, setContenidoEditado] = useState(comentario.contenido);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+export default function ComentarioItem({ comentario, onEditar, onEliminar }: Props) {
+  const { user } = useAuth();
+  const [editando, setEditando] = useState(false);
+  const [nuevoContenido, setNuevoContenido] = useState(comentario.contenido);
+  const [cargando, setCargando] = useState(false);
 
-  const autor = comentario.user?.nickname || 'Usuario';
-  const fecha = new Date(comentario.fecha).toLocaleDateString();
-
-  const esAutor = userId === comentario.user?._id;
+  const puedeEditar = user && user.id === comentario.user.id;
 
   const guardarEdicion = async () => {
-    setLoading(true);
-    setError(null);
+    if (!nuevoContenido.trim()) return;
+
+    setCargando(true);
     try {
-      const res = await fetch(`${API_URL}/comentario/${comentario._id}`, {
-        method: 'PATCH',
+      const res = await fetch(`${API_URL}/comment/${comentario.id}`, {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contenido: contenidoEditado }),
+        body: JSON.stringify({ contenido: nuevoContenido }),
       });
-      if (!res.ok) throw new Error('Error al editar el comentario');
-      const actualizado: CommentPopulated = await res.json();
-      onEditar(actualizado);
-      setModoEdicion(false);
-    } catch (err: any) {
-      setError(err.message || 'Error desconocido');
+
+      if (!res.ok) throw new Error('Error al actualizar el comentario');
+
+      const comentarioActualizado: CommentPopulated = {
+        ...comentario,
+        contenido: nuevoContenido,
+        fecha: new Date().toISOString(),
+      };
+
+      onEditar(comentarioActualizado);
+      setEditando(false);
+      toast.success('Comentario actualizado correctamente');
+      
+    } catch (error) {
+      console.error('Error al actualizar comentario:', error);
+      toast.error('Error al actualizar el comentario');
     } finally {
-      setLoading(false);
+      setCargando(false);
     }
   };
 
   const eliminar = async () => {
-    if (!window.confirm('¿Seguro que quieres eliminar este comentario?')) return;
+    if (!window.confirm('¿Estás seguro de que quieres eliminar este comentario?')) return;
 
-    setLoading(true);
-    setError(null);
+    setCargando(true);
     try {
-      const res = await fetch(`${API_URL}/comentario/${comentario._id}`, {
+      const res = await fetch(`${API_URL}/comment/${comentario.id}`, {
         method: 'DELETE',
       });
+
       if (!res.ok) throw new Error('Error al eliminar el comentario');
-      onEliminar(comentario._id!);
-    } catch (err: any) {
-      setError(err.message || 'Error desconocido');
+
+      onEliminar(comentario.id!);
+      toast.success('Comentario eliminado correctamente');
+      
+    } catch (error) {
+      console.error('Error al eliminar comentario:', error);
+      toast.error('Error al eliminar el comentario');
     } finally {
-      setLoading(false);
+      setCargando(false);
     }
+  };
+
+  const cancelarEdicion = () => {
+    setEditando(false);
+    setNuevoContenido(comentario.contenido);
   };
 
   return (
     <li className="list-group-item">
-      <strong>{autor}:</strong>{' '}
-      {modoEdicion ? (
-        <>
-          <textarea
-            className="form-control mb-2"
-            value={contenidoEditado}
-            onChange={(e) => setContenidoEditado(e.target.value)}
-            disabled={loading}
-          />
-          {error && <div className="text-danger mb-2">{error}</div>}
-          <button
-            className="btn btn-sm btn-primary me-2"
-            onClick={guardarEdicion}
-            disabled={loading || contenidoEditado.trim() === ''}
-          >
-            {loading ? 'Guardando...' : 'Guardar'}
-          </button>
-          <button
-            className="btn btn-sm btn-secondary"
-            onClick={() => {
-              setModoEdicion(false);
-              setContenidoEditado(comentario.contenido);
-              setError(null);
-            }}
-            disabled={loading}
-          >
-            Cancelar
-          </button>
-        </>
-      ) : (
-        <>
-          {comentario.contenido}
-          <br />
-          <small className="text-muted">{fecha}</small>
-          {esAutor && (
+      <div className="d-flex justify-content-between align-items-start">
+        <div className="flex-grow-1">
+          <strong>{comentario.user.nickname || 'Usuario'}</strong>
+          <small className="text-muted ms-2">
+            {new Date(comentario.fecha).toLocaleDateString()}
+          </small>
+          
+          {editando ? (
             <div className="mt-2">
-              <button className="btn btn-sm btn-outline-primary me-2" onClick={() => setModoEdicion(true)} disabled={loading}>
-                Editar
-              </button>
-              <button className="btn btn-sm btn-outline-danger" onClick={eliminar} disabled={loading}>
-                {loading ? 'Eliminando...' : 'Eliminar'}
-              </button>
+              <textarea
+                className="form-control"
+                value={nuevoContenido}
+                onChange={(e) => setNuevoContenido(e.target.value)}
+                disabled={cargando}
+                rows={3}
+              />
+              <div className="mt-2">
+                <button
+                  className="btn btn-sm btn-success me-2"
+                  onClick={guardarEdicion}
+                  disabled={cargando || !nuevoContenido.trim()}
+                >
+                  {cargando ? 'Guardando...' : 'Guardar'}
+                </button>
+                <button
+                  className="btn btn-sm btn-secondary"
+                  onClick={cancelarEdicion}
+                  disabled={cargando}
+                >
+                  Cancelar
+                </button>
+              </div>
             </div>
+          ) : (
+            <p className="mt-2 mb-1">{comentario.contenido}</p>
           )}
-          {error && <div className="text-danger mt-2">{error}</div>}
-        </>
-      )}
+        </div>
+
+        {puedeEditar && !editando && (
+          <div className="btn-group">
+            <button
+              className="btn btn-sm btn-outline-primary"
+              onClick={() => setEditando(true)}
+              disabled={cargando}
+            >
+              Editar
+            </button>
+            <button
+              className="btn btn-sm btn-outline-danger"
+              onClick={eliminar}
+              disabled={cargando}
+            >
+              {cargando ? 'Eliminando...' : 'Eliminar'}
+            </button>
+          </div>
+        )}
+      </div>
     </li>
   );
 }

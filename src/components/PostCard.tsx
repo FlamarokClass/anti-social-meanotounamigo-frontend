@@ -75,7 +75,7 @@ export default function PostCard({
 
           {onModificar && (
             <AnimatedButton className="btn btn-warning" onClick={onModificar}>
-              Modificar
+              Editar
             </AnimatedButton>
           )}
 

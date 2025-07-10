@@ -2,6 +2,7 @@
 /// <reference types="vite/client" /> 
 const API = import.meta.env.VITE_API_URL;
 import { PostImage } from '../types/mongoSchemas'
+import { UpdatePostParams } from '../types/mongoSchemas'
 
 export const getPosts = async () => {
   const res = await fetch(`${API}/post`);
@@ -79,3 +80,4 @@ export const assignImagesToPost = async (postId: string, imageIds: string[]) => 
   if (!res.ok) throw new Error("Error al asignar imágenes al post");
   return res.json();
 };
+

@@ -27,19 +27,19 @@ export default function FormularioComentario({ postId, onComentarioAgregado }: P
         body: JSON.stringify({
           contenido: comentario,
           post: postId,
-          user: user._id || user.id,
+          user: user.id,
         }),
       });
 
       if (!res.ok) throw new Error('Error al enviar el comentario');
 
       const resultado = await res.json();
+      
       const nuevoComentario: CommentPopulated = {
         ...resultado,
         user: {
-          _id: user._id || user.id || '',
-          nickname: user.nickname,
-          id: user.id || user._id || '',
+          id: user.id,
+          nickname: user.nickname
         },
       };
 
