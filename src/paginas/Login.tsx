@@ -1,52 +1,61 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { getUsers } from '../api/userApi'; 
+import { toast } from 'sonner';
+import PageWrapper, { AnimatedButton } from '../components/Animated';
 
 
 export default function Login() {
-  const [nickName, setNickName] = useState('');
+  const [nickname, setNickName] = useState('');
   const [password, setPassword] = useState('');
   const { setUser } = useAuth();
   const navigate = useNavigate();
 
-  // Usuario falso hardcodeado
-  const fakeUser = {  _id: '1', nickname: 'testuser', email: 'test@example.com', followers: [], following: []};
-  const fakePassword = '123456';
-
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (nickName === fakeUser.nickname && password === fakePassword) {
-      setUser(fakeUser);
-      localStorage.setItem('user', JSON.stringify(fakeUser));
+    try {
+      const usuarios = await getUsers();
+      const usuario = usuarios.find(
+        (u: any) => u.nickname === nickname && u.password === password
+      );
+
+      if (!usuario) {
+        toast.error('Usuario o contraseña incorrecta');
+        return;
+      }
+
+      setUser(usuario);
+      localStorage.setItem('user', JSON.stringify(usuario));
       navigate('/');
-    } else {
-      alert('Usuario o contraseña incorrectos');
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+      toast.warning('Ocurrió un error al iniciar sesión');
     }
   };
 
   return (
-    <form onSubmit={handleLogin} className="container mt-5" style={{ maxWidth: 400 }}>
-      <h2>Login</h2>
-      <input
-        placeholder="nickName"
-        value={nickName}
-        onChange={(e) => setNickName(e.target.value)}
-        className="form-control mb-2"
-      />
-      <input
-        type="password"
-        placeholder="Contraseña"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="form-control mb-2"
-      />
-      <button type="submit" className="btn btn-success">
-        Ingresar
-      </button>
-      <p className="mt-3 text-muted">
-        Usuario: <b>testuser</b> / Contraseña: <b>123456</b>
-      </p>
-    </form>
+    <PageWrapper> 
+      <form onSubmit={handleLogin} className="container mt-5" style={{ maxWidth: 400 }}>
+        <h2>Iniciar</h2>
+        <input
+          placeholder="nickname"
+          value={nickname}
+          onChange={(e) => setNickName(e.target.value)}
+          className="form-control mb-2 input-rojo"
+        />
+        <input
+          type="password"
+          placeholder="Contraseña"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="form-control mb-2 input-rojo"
+        />
+        <AnimatedButton type="submit" className="btn-success">
+          Ingresar
+        </AnimatedButton>
+      </form>
+    </PageWrapper>
   );
 }

@@ -1,14 +1,18 @@
+type EtiquetaFlexible = string | Tag;
+
 export interface User {
-  _id: string;
+  _id?: string;  // opcional porque puede venir como _id
+  id?: string;   // opcional porque puede venir como id (por el transform)
   nickname: string;
   email: string;
   followers: string[];
   following: string[];
 }
 
-// Comentario sin populate (usado en /comments y /comments/:id)
+// comentario sin populate (usado en /comments y /comments/:id)
 export interface Comment {
-  _id: string;
+  _id?: string;
+  id?: string;
   contenido: string;
   fecha: string;
   post: string;
@@ -16,45 +20,52 @@ export interface Comment {
   antiguedad?: number;
 }
 
-// Comentario con populate (usado en GET /posts/:id/full)
+// comentario con populate (usado en GET /posts/:id/full)
 export interface CommentPopulated {
-  _id: string;
+  _id?: string;
+  id?: string;
   contenido: string;
   fecha: string;
   post: string;
-  user: Pick<User, '_id' | 'nickname'>;
+  user: Pick<User, '_id' | 'id' | 'nickname'>;
   antiguedad?: number;
 }
 
-// Imagen de post (GET /post-image y /post-image/:id)
+// etiqueta (GET /tag y /tag/:id)
+export interface Tag {
+  _id?: string;
+  id?: string;
+  nombre: string;
+}
+export interface PostPopulated {
+  _id?: string;
+  id?: string;
+  descripcion: string;
+  fecha: string;
+  imagenes: (string | PostImage)[];
+  etiquetas: Tag[];
+  user: Pick<User, '_id' | 'id' | 'nickname' | 'email'>;
+  comentarios: CommentPopulated[];
+}
 export interface PostImage {
-  _id: string;
+  _id?: string;
+  id?: string;
   url: string;
 }
 
-// Etiqueta (GET /tag y /tag/:id)
-export interface Tag {
-  _id: string;
-  nombre: string;
-}
-
-// Post sin populate (usado en /posts y /posts/:id)
 export interface Post {
-  _id: string;
+  _id?: string;
+  id?: string;
   descripcion: string;
   fecha: string;
-  imagenes: string[];
-  etiquetas: string[];
+  imagenes: (string | PostImage)[];
+  etiquetas: EtiquetaFlexible[];
   user: string;
 }
-
-// Post con populate y comentarios (usado en /posts/:id/full)
-export interface PostPopulated {
-  _id: string;
+export interface UpdatePostParams {
+  postId: string;
   descripcion: string;
-  fecha: string;
-  imagenes: PostImage[];
-  etiquetas: Tag[];
-  user: Pick<User, '_id' | 'nickname' | 'email'>;
-  comentarios: CommentPopulated[];
+  etiquetas: string[]; 
+  imagenesExistentes: (string | PostImage)[]; 
+  imagenesNuevas: (string | PostImage)[] 
 }
